@@ -1,2128 +1,1932 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>أنظمة قواعد البيانات المتقدمة - الدروس التفاعلية</title>
-
-  <!-- Bootstrap RTL -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
-  
-  <!-- FontAwesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  
-  <!-- Highlight.js styles -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
-  
-  <!-- Google Fonts - Tajawal -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
-  
-  <!-- Animate.css -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-  
-  <style>
-    :root {
-      --primary-color: #0d6efd;
-      --primary-dark: #0143a3;
-      --secondary-color: #6c757d;
-      --success-color: #198754;
-      --dark-color: #212529;
-      --light-color: #f8f9fa;
-      --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-      --terminal-bg: #1e1e1e;
-      --terminal-text: #f8f8f8;
-      --highlight-color: #fce477;
-      --section-bg: #f7f9fc;
-      --code-bg: #0f172a;
-      --code-output: #002235;
-    }
-    
-    body {
-      font-family: 'Tajawal', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: var(--light-color);
-      color: var(--dark-color);
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
-    
-    .sidebar {
-      height: 100vh;
-      overflow-y: auto;
-      background: white;
-      box-shadow: 0 0 20px rgba(0,0,0,0.05);
-      position: sticky;
-      top: 0;
-      padding: 1.5rem;
-      transition: all 0.3s ease;
-      border-left: 1px solid rgba(0,0,0,0.05);
-    }
-    
-    .sidebar::-webkit-scrollbar {
-      width: 6px;
-    }
-    
-    .sidebar::-webkit-scrollbar-thumb {
-      background-color: rgba(0,0,0,0.1);
-      border-radius: 3px;
-    }
-    
-    .lab-card {
-      box-shadow: var(--card-shadow);
-      border-radius: 16px;
-      background: white;
-      padding: 24px;
-      margin-bottom: 24px;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(0,0,0,0.05);
-    }
-    
-    .lab-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-    }
-    
-    .lesson-card {
-      box-shadow: var(--card-shadow);
-      border-radius: 12px;
-      background: white;
-      padding: 24px;
-      margin-bottom: 24px;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(0,0,0,0.05);
-    }
-    
-    .lesson-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 4px;
-      height: 100%;
-      background: var(--primary-color);
-      opacity: 0.8;
-    }
-    
-    .lesson-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px dashed rgba(0,0,0,0.1);
-    }
-    
-    .lesson-title {
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: var(--primary-dark);
-      margin: 0;
-    }
-    
-    .lesson-explanation {
-      background: var(--section-bg);
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      position: relative;
-    }
-    
-    .lesson-explanation::before {
-      content: 'شرح';
-      position: absolute;
-      top: -10px;
-      right: 15px;
-      background: var(--primary-color);
-      color: white;
-      padding: 2px 12px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 500;
-    }
-    
-    .hint-box {
-      background: #fff8e6;
-      border-right: 4px solid #ffc107;
-      padding: 12px 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      font-size: 0.95rem;
-    }
-    
-    pre {
-      direction: ltr;
-      text-align: left;
-      background: var(--code-bg);
-      color: white;
-      padding: 16px;
-      border-radius: 8px;
-      overflow: auto;
-      margin-bottom: 20px;
-      position: relative;
-    }
-    
-    pre::before {
-      content: attr(data-lang);
-      position: absolute;
-      top: 0;
-      left: 0;
-      background: rgba(0,0,0,0.4);
-      color: white;
-      font-size: 0.7rem;
-      padding: 2px 8px;
-      border-radius: 0 0 4px 0;
-    }
-    
-    code.hljs {
-      font-family: 'JetBrains Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
-      font-size: 0.9rem;
-      padding: 0;
-      background: transparent;
-    }
-    
-    .run-output {
-      background: var(--code-output);
-      color: #d6f8ff;
-      padding: 15px;
-      border-radius: 8px;
-      white-space: pre-wrap;
-      min-height: 40px;
-      direction: ltr;
-      text-align: left;
-      font-family: 'JetBrains Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
-      font-size: 0.9rem;
-    }
-    
-    .action-bar {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-    }
-    
-    .btn-fancy {
-      border-radius: 8px;
-      padding: 0.5rem 1.2rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .btn-fancy:hover {
-      transform: translateY(-2px);
-    }
-    
-    .btn-fancy i {
-      font-size: 0.9rem;
-    }
-    
-    .btn-primary {
-      background: var(--primary-color);
-      border-color: var(--primary-color);
-    }
-    
-    .btn-primary:hover {
-      background: var(--primary-dark);
-      border-color: var(--primary-dark);
-    }
-    
-    .list-group-item {
-      border-radius: 8px !important;
-      margin-bottom: 6px;
-      border: 1px solid rgba(0,0,0,0.1);
-      transition: all 0.2s ease;
-    }
-    
-    .list-group-item:hover {
-      background: var(--section-bg);
-    }
-    
-    .list-group-item.active {
-      background: var(--primary-color);
-      border-color: var(--primary-color);
-      font-weight: 500;
-    }
-    
-    .practice-tasks {
-      background: #e6f7ff;
-      border-radius: 8px;
-      padding: 15px;
-      margin-top: 20px;
-    }
-    
-    .practice-tasks h5 {
-      color: #0066cc;
-      font-size: 1rem;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .practice-tasks ul {
-      margin-bottom: 0;
-      padding-right: 20px;
-    }
-    
-    .practice-tasks li {
-      margin-bottom: 8px;
-    }
-    
-    .practice-tasks li:last-child {
-      margin-bottom: 0;
-    }
-    
-    .form-control:focus {
-      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
-      border-color: var(--primary-color);
-    }
-    
-    .lab-objective {
-      background: #f8f9fa;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      border: 1px solid rgba(0,0,0,0.05);
-    }
-    
-    .output-label {
-      margin-bottom: 6px;
-      font-weight: 500;
-      color: var(--secondary-color);
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    
-    .copy-btn {
-      position: absolute;
-      top: 6px;
-      left: 6px;
-      background: rgba(255,255,255,0.1);
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 4px 8px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      z-index: 5;
-    }
-    
-    .copy-btn:hover {
-      background: rgba(255,255,255,0.2);
-    }
-    
-    .copy-success {
-      background: #198754 !important;
-    }
-    
-    .visual-diagram {
-      background: white;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      overflow: hidden;
-    }
-    
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-      .sidebar {
-        height: auto;
-        position: relative;
-      }
-      
-      .lab-card,
-      .lesson-card {
-        padding: 18px;
-      }
-      
-      .lesson-explanation {
-        padding: 12px;
-      }
-      
-      .action-bar {
-        flex-direction: row;
-        flex-wrap: wrap;
-      }
-      
-      .action-bar .btn {
-        width: auto;
-        margin-bottom: 5px;
-      }
-    }
-    
-    /* SQL Terminal Styling */
-    .sql-terminal {
-      background: var(--terminal-bg);
-      color: var(--terminal-text);
-      border-radius: 8px;
-      padding: 15px;
-      font-family: 'JetBrains Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
-      font-size: 0.9rem;
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .sql-terminal::before {
-      content: 'SQL> ';
-      color: #4caf50;
-      font-weight: bold;
-      display: block;
-      margin-bottom: 5px;
-    }
-    
-    .sql-terminal pre {
-      background: transparent;
-      padding: 0;
-      margin: 0;
-      color: inherit;
-      border-radius: 0;
-    }
-    
-    .sql-terminal pre::before {
-      display: none;
-    }
-    
-    .sql-terminal .result {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px dashed rgba(255,255,255,0.1);
-    }
-    
-    .sql-terminal .result::before {
-      content: 'النتيجة:';
-      color: #ff9800;
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    
-    /* Animation utilities */
-    .fade-in {
-      animation: fadeIn 0.5s ease-in-out;
-    }
-    
-    @keyframes fadeIn {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
-    
-    /* Visual block diagrams */
-    .block-diagram {
-      background: #fff;
-      border-radius: 8px;
-      padding: 15px;
-      margin: 20px 0;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    
-    .plsql-blocks {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-    
-    .plsql-block {
-      padding: 12px;
-      border-radius: 6px;
-      border: 2px solid #e0e0e0;
-      text-align: center;
-      position: relative;
-    }
-    
-    .plsql-block.declare {
-      background: #e3f2fd;
-      border-color: #bbdefb;
-    }
-    
-    .plsql-block.begin {
-      background: #e8f5e9;
-      border-color: #c8e6c9;
-    }
-    
-    .plsql-block.exception {
-      background: #ffebee;
-      border-color: #ffcdd2;
-    }
-    
-    .plsql-block.end {
-      background: #ede7f6;
-      border-color: #d1c4e9;
-    }
-    
-    .plsql-block h5 {
-      margin: 0;
-      font-size: 1rem;
-      color: #333;
-    }
-    
-    .plsql-block p {
-      margin: 8px 0 0;
-      font-size: 0.9rem;
-      color: #555;
-    }
-    
-    .connect-arrow {
-      text-align: center;
-      font-size: 1.5rem;
-      color: #757575;
-      margin: -3px 0;
-    }
-    
-    /* Variable visualization */
-    .variable-visual {
-      display: inline-flex;
-      align-items: center;
-      background: #f5f5f5;
-      border: 1px solid #e0e0e0;
-      border-radius: 4px;
-      padding: 3px 8px;
-      margin: 0 2px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-    }
-    
-    .variable-visual .name {
-      color: #d32f2f;
-      margin-left: 3px;
-    }
-    
-    .variable-visual .value {
-      color: #0d47a1;
-    }
-    
-    
-    /* PDF Print styles */
-    @media print {
-      .sidebar, 
-      .action-bar,
-      .copy-btn,
-      button:not(.exclude-from-print) {
-        display: none !important;
-      }
-      
-      body {
-        background: white !important;
-      }
-      
-      .container-fluid,
-      main {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-      
-      .lesson-card,
-      .lab-card {
-        break-inside: avoid;
-        page-break-inside: avoid;
-        box-shadow: none !important;
-        border: 1px solid #e0e0e0 !important;
-      }
-      
-      pre, code {
-        white-space: pre-wrap !important;
-        word-break: break-word !important;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Half Million | Premium Coffee</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --hm-black: #0a0a0a;
+            --hm-dark-brown: #3c2f2f;
+            --hm-medium-brown: #6f4e37;
+            --hm-light-brown: #a67c52;
+            --hm-accent: #bda57b;
+            --hm-cream: #f5f0e1;
+            --hm-lavender: #e6e6fa;
+            --hm-light: #fcfcfc;
+            --header-height: 90px;
+            --transition-fast: 0.3s;
+            --transition-medium: 0.5s;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--hm-light);
+            color: var(--hm-black);
+            padding-top: var(--header-height);
+            scroll-behavior: smooth;
+        }
+        
+        /* Typography */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: 700;
+        }
+        
+        .text-accent {
+            color: var(--hm-accent);
+        }
+        
+        .fw-medium {
+            font-weight: 500;
+        }
+        
+        .text-truncate-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Header & Navigation */
+        .navbar {
+            background-color: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            transition: all var(--transition-fast);
+            height: var(--header-height);
+        }
+        
+        .navbar.scrolled {
+            padding: 12px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            position: relative;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--hm-accent);
+            transition: all var(--transition-fast);
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 70%;
+        }
+        
+        .nav-link-highlight {
+            color: var(--hm-accent) !important;
+        }
+        
+        .nav-icon {
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        
+        .nav-icon:hover {
+            color: var(--hm-accent) !important;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 85vh;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1559525839-b184a4d698c7?q=80&w=2000&auto=format&fit=crop') center/cover;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        
+        /* Buttons */
+        .btn-custom {
+            background-color: var(--hm-accent);
+            color: white;
+            border-radius: 0;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+            border: 1px solid var(--hm-accent);
+        }
+        
+        .btn-custom:hover {
+            background-color: transparent;
+            color: var(--hm-accent);
+        }
+        
+        .btn-dark-custom {
+            background-color: var(--hm-black);
+            color: white;
+            border-radius: 0;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+            border: 1px solid var(--hm-black);
+        }
+        
+        .btn-dark-custom:hover {
+            background-color: var(--hm-accent);
+            border-color: var(--hm-accent);
+            color: white;
+        }
+        
+        .btn-outline-custom {
+            background-color: transparent;
+            color: var(--hm-accent);
+            border-radius: 0;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+            border: 1px solid var(--hm-accent);
+        }
+        
+        .btn-outline-custom:hover {
+            background-color: var(--hm-accent);
+            color: white;
+        }
+        
+        /* Product Cards */
+        .product-card {
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-img-wrapper {
+            position: relative;
+            overflow: hidden;
+            height: 280px;
+        }
+        
+        .product-img-wrapper img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-medium);
+        }
+        
+        .product-card:hover .product-img-wrapper img {
+            transform: scale(1.05);
+        }
+        
+        .product-overlay {
+            position: absolute;
+            bottom: -60px;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            transition: bottom var(--transition-fast);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .product-card:hover .product-overlay {
+            bottom: 0;
+        }
+        
+        .product-badges {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .badge-custom {
+            background-color: var(--hm-accent);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 2px;
+        }
+        
+        .badge-new {
+            background-color: var(--hm-medium-brown);
+        }
+        
+        .badge-bestseller {
+            background-color: var(--hm-black);
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            margin-top: 5px;
+        }
+        
+        .product-rating i {
+            color: #FFC107;
+            font-size: 0.8rem;
+        }
+        
+        .product-rating .rating-count {
+            color: #777;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+        
+        .wishlist-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: white;
+            color: #777;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            opacity: 0;
+            transform: translateY(10px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-card:hover .wishlist-icon {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .wishlist-icon:hover {
+            background-color: var(--hm-black);
+            color: white;
+        }
+        
+        .wishlist-icon.active {
+            background-color: #e74c3c;
+            color: white;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Categories */
+        .category-card {
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            height: 200px;
+            cursor: pointer;
+            transition: transform var(--transition-fast);
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .category-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-medium);
+        }
+        
+        .category-card:hover .category-img {
+            transform: scale(1.1);
+        }
+        
+        .category-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2));
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+        }
+        
+        .category-title {
+            color: white;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        /* Featured Section */
+        .featured-section {
+            background-color: var(--hm-cream);
+            padding: 80px 0;
+        }
+        
+        /* Testimonials */
+        .testimonial-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            height: 100%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--hm-black);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .footer-link {
+            color: #aaa;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color var(--transition-fast);
+        }
+        
+        .footer-link:hover {
+            color: var(--hm-accent);
+        }
+        
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-right: 10px;
+            transition: all var(--transition-fast);
+        }
+        
+        .social-icon:hover {
+            background-color: var(--hm-accent);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .footer-subscribe {
+            display: flex;
+        }
+        
+        .footer-subscribe input {
+            flex-grow: 1;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 12px 15px;
+            outline: none;
+        }
+        
+        .footer-subscribe input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .footer-subscribe button {
+            background-color: var(--hm-accent);
+            border: none;
+            color: white;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: background-color var(--transition-fast);
+        }
+        
+        .footer-subscribe button:hover {
+            background-color: var(--hm-light-brown);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+        }
+        
+        .footer-bottom-link {
+            color: #aaa;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 0.9rem;
+            transition: color var(--transition-fast);
+        }
+        
+        .footer-bottom-link:hover {
+            color: var(--hm-accent);
+        }
+        
+        /* Product Detail Page */
+        .sticky-col {
+            position: sticky;
+            top: 100px;
+        }
+        
+        .gallery-img {
+            object-fit: cover;
+            height: 600px;
+            width: 100%;
+            border-radius: 8px;
+        }
+        
+        .thumb-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .thumb-img:hover,
+        .thumb-img.active {
+            border: 2px solid var(--hm-accent);
+        }
+        
+        .btn-check:checked+.btn-outline-dark {
+            background-color: var(--hm-black);
+            color: white;
+            border-color: var(--hm-black);
+        }
+        
+        .btn-outline-dark {
+            border-radius: 0;
+        }
+        
+        /* Checkout Page */
+        .checkout-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .form-control,
+        .form-select {
+            border-radius: 4px;
+            padding: 15px;
+            border-color: #ddd;
+        }
+        
+        .form-control:focus,
+        .form-select:focus {
+            box-shadow: none;
+            border-color: var(--hm-black);
+        }
+        
+        .summary-pane {
+            background-color: #f8f9fa;
+            padding: 40px;
+            height: 100%;
+            border-left: 1px solid #eee;
+        }
+        
+        .item-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .payment-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .payment-card:hover,
+        .payment-card.active {
+            border-color: var(--hm-accent);
+            background-color: var(--hm-cream);
+        }
+        
+        /* Media Queries */
+        @media (max-width: 991.98px) {
+            .hero {
+                height: 70vh;
+                background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1559525839-b184a4d698c7?q=80&w=2000&auto=format&fit=crop') center/cover;
+            }
+            
+            .summary-pane {
+                border-left: none;
+                border-top: 1px solid #eee;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .hero {
+                height: 60vh;
+                text-align: center;
+            }
+            
+            .product-img-wrapper {
+                height: 240px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div class="container-fluid">
-    <div class="row">
-      <!-- Sidebar -->
-      <aside class="col-12 col-md-3 col-lg-2 sidebar">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-          <h4 class="m-0">الدروس</h4>
-          <button id="printLabBtn" class="btn btn-sm btn-outline-secondary" title="طباعة الدرس الحالي">
-            <i class="fas fa-print"></i>
-          </button>
-        </div>
-        
-     
-        
-        <div id="labsList" class="list-group mb-4"></div>
-        
-      </aside>
-
-      <!-- Main Content -->
-      <main class="col-12 col-md-9 col-lg-10 py-4">
-        <div id="mainArea">
-          <header class="mb-4">
-            <div class="d-flex align-items-center justify-content-between">
-              <h2 id="labTitle" class="mb-0">اختر مختبر من القائمة</h2>
-              <div id="labNav" class="d-none">
-                <button id="prevLabBtn" class="btn btn-sm btn-outline-secondary me-1" title="الدرس السابق">
-                  <i class="fas fa-chevron-right"></i>
-                </button>
-                <button id="nextLabBtn" class="btn btn-sm btn-outline-secondary" title="الدرس التالي">
-                  <i class="fas fa-chevron-left"></i>
-                </button>
-              </div>
+    <!-- Header/Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand text-white" href="index.html">HALF MILLION</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Menu
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Hot Coffee</a></li>
+                            <li><a class="dropdown-item" href="#">Cold Coffee</a></li>
+                            <li><a class="dropdown-item" href="#">Specialty Drinks</a></li>
+                            <li><a class="dropdown-item" href="#">Coffee Beans</a></li>
+                            <li><a class="dropdown-item" href="#">Equipment</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#">Locations</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#">Our Story</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#">Rewards</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-highlight" href="#">Order Online</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-4">
+                    <a href="#" class="text-white nav-icon" data-bs-toggle="modal" data-bs-target="#searchModal">
+                        <i class="fas fa-search fs-5"></i>
+                    </a>
+                    <a href="#" class="text-white nav-icon">
+                        <i class="far fa-heart fs-5"></i>
+                    </a>
+                    <a href="checkout.html" class="text-white nav-icon position-relative">
+                        <i class="fas fa-shopping-bag fs-5"></i>
+                        <span id="cart-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">0</span>
+                    </a>
+                    <a href="#" class="text-white nav-icon">
+                        <i class="far fa-user fs-5"></i>
+                    </a>
+                </div>
             </div>
-            <div id="labObjective" class="lab-objective mt-3"></div>
-          </header>
-
-
-              <!-- lessons will be rendered here -->
-              <div id="lessonsContainer"></div>
-
-
         </div>
-      </main>
-    </div>
-  </div>
-
-  <!-- JSON editor modal -->
-  <div class="modal fade" id="jsonModal" tabindex="-1">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">تعديل بيانات الدروس</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <textarea id="labsJson" class="form-control" rows="20"></textarea>
-        </div>
-        <div class="modal-footer">
-          <button id="saveJson" class="btn btn-primary">
-            <i class="fas fa-save me-1"></i> حفظ وتحديث
-          </button>
-          <button class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Dependencies -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sql.js@1.4.0/dist/sql-wasm.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-
-  <!-- Main application script -->
-  <script type="module">
-  
-  const labs = [
-      {
-        id: "lab1",
-        title: "الدرس الأول: أساسيات PL/SQL وأول كود برمجي",
-        objective: "في هذا الدرس، راح نتعلم أساسيات لغة PL/SQL مع Oracle، ونفهم كيف نكتب بلوك برمجي وكيف نطبع رسالة باستخدام DBMS_OUTPUT.",
-        prerequisites: [
-          "معرفة بسيطة بمفهوم قواعد البيانات",
-          "فهم ماذا تعني SQL بشكل عام"
-        ],
-        lessons: [
-          {
-            id: "l1-1",
-            title: "فكرة البلوك في PL/SQL - البناء الأساسي للكود",
-            explanation:
-`في البداية، خلونا نفهم ايش هي PL/SQL بطريقة سهلة: هي زي لغة برمجة داخل أوراكل نقدر نستخدمها عشان نسوي برامج صغيرة تتعامل مع قواعد البيانات.
-
-🏗️ تخيّل البلوك (Block) كأنه صندوق أو علبة:
-- في هذا الصندوق نقدر نخزن متغيرات (variables)
-- نكتب تعليمات برمجية تتنفذ بالترتيب
-- نضيف تعليمات للتعامل مع الأخطاء لو صارت
-
-البلوك ينقسم لثلاثة أقسام رئيسية:
-1️⃣ DECLARE - قسم الإعلان: نكتب هنا المتغيرات اللي راح نستخدمها
-2️⃣ BEGIN ... END - قسم التنفيذ: هنا نكتب الأوامر اللي نبغاها تتنفذ
-3️⃣ EXCEPTION - قسم معالجة الأخطاء: نكتب هنا كيف نتعامل مع المشاكل
-
-زي مثلاً لو تبي تطبع رسالة، نستخدم أمر DBMS_OUTPUT.PUT_LINE. هذا يخلي أوراكل يعرض الرسالة في نافذة المخرجات.`,
-            notes:
-`💡 نصيحة سريعة: لو كنت مبتدئ، خلي تركيزك على فهم المثال بشكل عام، بعدين على كل سطر فيه لوحده. وأهم شيء: جرب! غير الكود وشوف وش يصير.`,
-            visualDiagram: {
-              type: "plsql-block",
-              title: "تشريح بلوك PL/SQL",
-              description: "تكوين البلوك البسيط في PL/SQL"
-            },
-            example: {
-              title: "أول مثال: Hello, World! - مع الشرح",
-              lang: "plsql",
-              code:
-`-- مثال بسيط لأول بلوك PL/SQL
-DECLARE
-  -- هنا نعلن متغيّر اسمه message نوعه نص (VARCHAR2) وطوله 30 حرف
-  message VARCHAR2(30) := 'مرحباً بالعالم!'; 
-
-BEGIN
-  -- هنا نطبع المتغيّر على شاشة المخرجات
-  DBMS_OUTPUT.PUT_LINE(message);
-  -- نقدر نطبع رسالة مباشرة (بدون متغير)
-  DBMS_OUTPUT.PUT_LINE('هذا أول كود PL/SQL أكتبه!');
-
-END;
-/
-`
-            },
-            tasks: [
-              "غيّر النص داخل message إلى اسمك الشخصي وجرب تشغيله (في OneCompiler).",
-              "أضف سطر جديد بعد السطر الثاني يطبع رسالة أخرى من اختيارك."
-            ]
-          },
-
-          {
-            id: "l1-2",
-            title: "طباعة التاريخ والوقت - استخدام SYSTIMESTAMP",
-            explanation:
-`الحين بنشوف مثال عملي: كيف نعرف اليوم والساعة في الوقت الحالي (يعني الآن) في أوراكل؟
-
-عندنا دالة اسمها SYSTIMESTAMP تعطينا التاريخ والوقت الحالي من قاعدة البيانات. لكن المشكلة إنها ما تطلع بشكل مفهوم للإنسان. 
-
-فنستخدم TO_CHAR عشان نحول التاريخ إلى نص بالطريقة اللي نبغاها.
-- مثلاً عشان نجيب يوم الأسبوع + الساعة، نستخدم: 'fmDay, HH24:MI'
-- ممكن نضيف منطقة زمنية محددة زي 'Asia/Riyadh' عشان نضمن إن الوقت بتوقيت السعودية
-
-طيب ليش حطينا "fm" قبل Day؟ عشان يشيل المسافات الزائدة من النتيجة.`,
-            notes:
-`💡 في أوراكل، التاريخ والوقت مهم جداً في كثير من التطبيقات. تأكد من اختيار المنطقة الزمنية المناسبة خصوصاً لو الخادم في بلد ثانية.`,
-            visualDiagram: {
-              type: "date-format",
-              title: "عناصر تنسيق التاريخ والوقت",
-              description: "كيف نشكل صيغة التاريخ والوقت"
-            },
-            example: {
-              title: "معرفة اليوم والوقت الحالي",
-              lang: "plsql",
-              code:
-`SET SERVEROUTPUT ON;
-
-DECLARE
-  v_day VARCHAR2(40);
-BEGIN
-  -- نحول الـ timestamp إلى نص بصيغة: Day, HH24:MI
-  -- مثلاً: "الاثنين, 10:49"
-  v_day := TO_CHAR(SYSTIMESTAMP AT TIME ZONE 'Asia/Riyadh', 'fmDay, HH24:MI');
-  
-  -- نطبع النتيجة
-  DBMS_OUTPUT.PUT_LINE('اليوم هو: ' || v_day);
-  
-  -- طريقة أخرى: نطبع التاريخ كاملاً
-  DBMS_OUTPUT.PUT_LINE('التاريخ كاملاً: ' || 
-    TO_CHAR(SYSTIMESTAMP, 'DD-MM-YYYY HH24:MI:SS'));
-END;
-/
-`
-            },
-            tasks: [
-              "شغّل المثال على OneCompiler (تأكد من تفعيل SET SERVEROUTPUT ON).",
-              "غيّر صيغة التاريخ إلى 'YYYY/MM/DD' وشوف النتيجة.",
-              "حاول إضافة سطر يطبع اليوم بالهجري (بحث: Oracle HIJRAH date)."
-            ]
-          },
-
-          {
-            id: "l1-3",
-            title: "أنواع المتغيرات الأساسية في PL/SQL - دليل سريع",
-            explanation:
-`الحين بنشوف أنواع المتغيرات الأساسية اللي نحتاجها في أغلب الأوقات:
-
-📝 VARCHAR2(size) - للنصوص:
-- مثل أسماء الطلاب، العناوين، التعليقات.
-- الـ (size) يحدد أقصى طول ممكن.
-- مثال: student_name VARCHAR2(50) للأسماء.
-
-🔢 NUMBER أو INTEGER - للأرقام:
-- NUMBER يمكن أن يكون رقم كامل أو عشري.
-- INTEGER للأرقام الصحيحة فقط (بدون كسور).
-- مثال: age INTEGER للعمر أو price NUMBER(10,2) للأسعار مع خانتين عشريتين.
-
-📅 DATE / TIMESTAMP - للتواريخ والأوقات:
-- DATE: يحفظ تاريخ ووقت.
-- TIMESTAMP: يحفظ تاريخ ووقت بدقة أعلى (مع ميلي ثانية).
-- مثال: birth_date DATE أو login_time TIMESTAMP.
-
-✅ BOOLEAN - صح أو خطأ:
-- تأخذ قيمة TRUE أو FALSE أو NULL.
-- تستخدم في الشروط والتحقق.
-- مثال: is_active BOOLEAN := TRUE.
-
-ملاحظة: ما نحتاج نحفظ كل الأنواع، بس المهم نعرف استخدام كل نوع وين يكون مناسب.`,
-            visualDiagram: {
-              type: "variable-types",
-              title: "أنواع المتغيرات الأساسية",
-              description: "متى نستخدم كل نوع؟"
-            },
-            example: {
-              title: "استخدام أنواع مختلفة من المتغيرات",
-              lang: "plsql",
-              code:
-`DECLARE
-  -- أنواع مختلفة من المتغيرات مع أمثلة عملية
-  student_name VARCHAR2(50) := 'سارة الأحمد';  -- نص
-  student_age  INTEGER := 20;                   -- رقم صحيح
-  student_gpa  NUMBER(3,2) := 3.75;             -- رقم عشري
-  birth_date   DATE := TO_DATE('01-01-2003', 'DD-MM-YYYY'); -- تاريخ
-  is_active    BOOLEAN := TRUE;                 -- منطقي (صح/خطأ)
-  
-BEGIN
-  -- طباعة البيانات
-  DBMS_OUTPUT.PUT_LINE('اسم الطالب: ' || student_name);
-  DBMS_OUTPUT.PUT_LINE('العمر: ' || student_age || ' سنة');
-  DBMS_OUTPUT.PUT_LINE('المعدل: ' || student_gpa);
-  DBMS_OUTPUT.PUT_LINE('تاريخ الميلاد: ' || TO_CHAR(birth_date, 'DD-MM-YYYY'));
-  
-  -- استخدام المتغير المنطقي في شرط
-  IF is_active THEN
-    DBMS_OUTPUT.PUT_LINE('حالة الطالب: نشط');
-  ELSE
-    DBMS_OUTPUT.PUT_LINE('حالة الطالب: غير نشط');
-  END IF;
-END;
-/
-`
-            },
-            tasks: [
-              "أضف متغير جديد course_name من نوع VARCHAR2 وأعطه قيمة اسم مقرر دراسي ثم اطبعه.",
-              "غيّر قيمة is_active إلى FALSE وراقب التغيير في المخرجات.",
-              "أضف متغير registration_date من نوع DATE وأعطه قيمة اليوم الحالي (SYSDATE)."
-            ]
-          },
-
-          {
-            id: "l1-4",
-            title: "مثال عملي للتجربة: جدول الطلاب (SQL في المتصفح)",
-            explanation:
-`الآن بنشوف مثال عملي تقدر تجربه مباشرة في المتصفح!
-
-هذا المثال يوضح ثلاث عمليات أساسية:
-1️⃣ إنشاء جدول students باستخدام CREATE TABLE
-2️⃣ إضافة بيانات للجدول باستخدام INSERT INTO
-3️⃣ استعراض البيانات باستخدام SELECT
-
-المثال مصمم عشان تشوف النتيجة مباشرة من غير ما تحتاج تثبت أوراكل أو أي برنامج. اضغط "شغّل SQL" وشوف النتيجة.
-
-هذه الأوامر الثلاثة (CREATE, INSERT, SELECT) هي أساس التعامل مع أي قاعدة بيانات.`,
-            visualDiagram: {
-              type: "sql-flow",
-              title: "خطوات إنشاء وتعبئة الجدول",
-              description: "الخطوات الأساسية للتعامل مع الجداول"
-            },
-            example: {
-              title: "جدول الطلاب (SQL - يعمل في المتصفح)",
-              lang: "sql",
-              code:
-`-- إنشاء جدول جديد للطلاب
-CREATE TABLE students (
-  id INTEGER PRIMARY KEY,  -- رقم الطالب (مفتاح أساسي)
-  name TEXT,               -- اسم الطالب
-  major TEXT,              -- التخصص
-  gpa REAL                 -- المعدل
-);
-
--- إضافة بيانات للطلاب
-INSERT INTO students VALUES (1, 'أحمد محمد', 'علوم حاسب', 3.85);
-INSERT INTO students VALUES (2, 'سارة خالد', 'نظم معلومات', 4.0);
-INSERT INTO students VALUES (3, 'محمد علي', 'علوم حاسب', 3.2);
-INSERT INTO students VALUES (4, 'نورة سعد', 'شبكات', 3.7);
-
--- استعلام لعرض جميع الطلاب
-SELECT * FROM students;
-
--- استعلام للطلاب في تخصص علوم حاسب فقط
--- SELECT * FROM students WHERE major = 'علوم حاسب';
-`
-            },
-            tasks: [
-              "شغّل الكود كما هو واستعرض النتيجة.",
-              "أزل علامة التعليق عن السطر الأخير وشغّله لرؤية الطلاب في تخصص 'علوم حاسب' فقط.",
-              "أضف طالب جديد باسمك وتخصصك ومعدل من اختيارك، ثم شغّل الكود مرة أخرى."
-            ]
-          },
-
-          {
-            id: "l1-5",
-            title: "نصائح مهمة وملاحظات عملية",
-            explanation:
-`بعد ما شفنا الأمثلة، خلونا نتكلم عن بعض النصائح المهمة والأخطاء الشائعة:
-
-1️⃣ الفرق بين PL/SQL و SQL:
-- SQL: لغة استعلام فقط (مثل SELECT, INSERT)
-- PL/SQL: لغة برمجة كاملة تتضمن SQL مع متغيرات وتحكم
-
-2️⃣ رسائل الأخطاء:
-- إذا ظهرت رسالة خطأ، اقرأها بتركيز. غالباً تقولك بالضبط وين المشكلة.
-- أكثر الأخطاء شيوعاً: نسيان الفاصلة المنقوطة (;) أو كتابة اسم متغير خطأ.
-
-3️⃣ مشكلة "لا أرى المخرجات" في أوراكل:
-- تأكد من كتابة SET SERVEROUTPUT ON; قبل البدء.
-- في OneCompiler، تأكد من تفعيل خيار "Enable Output" من الإعدادات.
-
-4️⃣ أسلوب كتابة الكود:
-- حاول تنظيم الكود بتسطير منتظم (indentation).
-- أضف تعليقات توضح ما يفعله الكود، خاصة الأجزاء المعقدة.
-
-5️⃣ استراتيجية التعلم:
-- جرب كل مثال بنفسك. التطبيق العملي هو أفضل طريقة للتعلم.
-- غيّر شيء واحد في كل مرة وشوف النتيجة، بدل ما تغير كل شيء مرة واحدة.`,
-            visualDiagram: {
-              type: "tips-tricks",
-              title: "نصائح للمبتدئين",
-              description: "ملاحظات مهمة للدروس القادمة"
-            },
-            example: {
-              title: "مثال توضيحي للأخطاء الشائعة وتصحيحها",
-              lang: "plsql",
-              code:
-`-- مثال للأخطاء الشائعة مع التصحيح
-DECLARE
-  -- خطأ شائع: نسيان تحديد نوع المتغير
-  -- student_name := 'عبدالله';  -- خطأ
-  student_name VARCHAR2(50) := 'عبدالله';  -- صحيح
-  
-  -- خطأ شائع: استخدام = بدل := للتعيين
-  -- grade = 95;  -- خطأ
-  grade NUMBER := 95;  -- صحيح
-BEGIN
-  -- خطأ شائع: كتابة اسم المتغير بشكل خاطئ
-  -- DBMS_OUTPUT.PUT_LINE(Student_Name);  -- خطأ (حساس لحالة الأحرف)
-  DBMS_OUTPUT.PUT_LINE(student_name);  -- صحيح
-  
-  -- خطأ شائع: نسيان الفاصلة المنقوطة
-  DBMS_OUTPUT.PUT_LINE('الدرجة: ' || grade);  -- لا تنسى ; في النهاية
-  
-  -- ملاحظة: في PL/SQL تسمى هذه النقطة المنقوطة "semicolon"
-END;
-/  -- لا تنسى هذا الرمز / بعد END
-`
-            },
-            tasks: [
-              "حاول تحديد ثلاثة أخطاء شائعة في الكود وكيف تم تصحيحها.",
-              "جرب كتابة بلوك PL/SQL بسيط يحتوي على متغير واحد ويطبع قيمته."
-            ]
-          }
-        ],
-      },
-      {
-        id: "lab2",
-        title: "الدرس الثاني: التعامل مع المتغيرات والتواريخ",
-        objective: "في هذا الدرس، راح نتعمق في فهم سلوك المتغيرات قبل وبعد تعيين القيم، والفرق بين NULL والقيم الفارغة، ونتعلم طرق مختلفة للتعامل مع التواريخ وتنسيقها بصيغ مختلفة.",
-        prerequisites: [
-          "المفهوم الأساسي للمتغيّر (مساحة تخزين مؤقتة للبيانات).",
-          "فهم مبسط لبلوك PL/SQL من الدرس الأول."
-        ],
-        lessons: [
-          {
-            id: "l2-1",
-            title: "الطباعة قبل وبعد تعيين القيمة - لماذا تظهر النتيجة فارغة؟",
-            explanation:
-`في هذا الدرس بنشوف سلوك المتغيرات قبل وبعد ما نعطيها قيم.
-
-المشكلة اللي واجهتنا في المثال هي: ليش لما نطبع متغير قبل ما نعطيه قيمة، ما يظهر شي؟
-
-الجواب: لما نعرّف متغير في PL/SQL وما عطيناه قيمة، راح تكون قيمته NULL. وفي أوراكل، NULL ما هي "فراغ" أو "صفر"، لكنها تعني "غياب القيمة تماماً".
-
-وأهم شيء لازم تعرفه: لما تحاول تجمع NULL مع أي شي (حتى لو نص) باستخدام ||، النتيجة راح تكون عبارة عن النص فقط. ليه؟ لأن NULL في قواعد البيانات تعني "قيمة غير معروفة".
-
-في المثال، "My name is: " || Myname قبل التعيين بيطبع "My name is: " بس، لأن Myname قيمته NULL.`,
-            notes:
-`💡 نصيحة مهمة: لازم تعرف الفرق بين:
-- NULL = غياب القيمة تماماً (المتغير ما له قيمة معروفة)
-- '' = نص فارغ (المتغير له قيمة، وقيمته هي "لا شيء")`,
-            visualDiagram: {
-              type: "null-vs-empty",
-              title: "الفرق بين NULL والنص الفارغ",
-              description: "فهم سلوك المتغيرات قبل وبعد التعيين"
-            },
-            example: {
-              title: "طباعة المتغير قبل وبعد تعيين القيمة - مشروح",
-              lang: "plsql",
-              code:
-`-- المثال يوضح سلوك المتغير قبل وبعد تعيين قيمة
-SET SERVEROUTPUT ON;
-
-DECLARE
-  -- هنا عرفنا متغير بدون قيمة ابتدائية، فراح يكون NULL
-  Myname VARCHAR2(20);
-BEGIN
-  -- الطباعة الأولى: لأن Myname قيمته NULL، فراح تظهر الرسالة بدون اسم
-  DBMS_OUTPUT.PUT_LINE('اسمي هو: ' || Myname);
-  DBMS_OUTPUT.PUT_LINE('طول الاسم: ' || LENGTH(Myname));  -- راح يطبع NULL
-  
-  -- الآن نعطي قيمة للمتغير
-  Myname := 'محمد';  -- أو استخدم اسمك هنا
-  
-  -- الطباعة الثانية: الآن راح يظهر الاسم لأنه أصبح له قيمة
-  DBMS_OUTPUT.PUT_LINE('اسمي هو: ' || Myname);
-  DBMS_OUTPUT.PUT_LINE('طول الاسم: ' || LENGTH(Myname));  -- راح يطبع 4
-  
-  -- تجربة إضافية: نعطي المتغير نص فارغ (مختلف عن NULL)
-  Myname := '';
-  DBMS_OUTPUT.PUT_LINE('اسمي الآن: [' || Myname || ']');  -- سيظهر: اسمي الآن: []
-  DBMS_OUTPUT.PUT_LINE('طول الاسم الآن: ' || LENGTH(Myname));  -- راح يطبع 0
-END;
-/
-`
-              ,
-              online: "https://onecompiler.com/oracle/"
-            },
-            tasks: [
-              "شغّل المثال على OneCompiler وشوف النتائج المختلفة.",
-              "أضف متغير age من نوع NUMBER بدون تعيين قيمة، ثم اطبعه، ثم عيّن له قيمة 25، ثم اطبعه مرة أخرى.",
-              "جرب استخدام NVL(Myname, 'لا يوجد اسم') في الطباعة الأولى، وشوف النتيجة (NVL تستبدل NULL بقيمة بديلة)."
-            ]
-          },
-
-          {
-            id: "l2-2",
-            title: "زيادة قيمة المتغير وتخزين تاريخ النظام - عمليات حسابية وتنسيق التاريخ",
-            explanation:
-`الحين بنتعلم شغلتين مهمتين:
-
-1️⃣ تحديث قيمة متغير رقمي باستخدام عمليات حسابية:
-بنبدأ بإنشاء متغير v_counter ونعطيه قيمة 0، ثم نزيد قيمته باستخدام v_counter := v_counter + 3. هذا الأسلوب أساسي في البرمجة - بناخذ القيمة الحالية ونغيرها ونرجعها للمتغير نفسه.
-
-2️⃣ التعامل مع التاريخ والوقت:
-SYSDATE يعطينا التاريخ والوقت الحالي من الخادم. المشكلة إنه يطلع بتنسيق أوراكل الداخلي، اللي ما يكون دايماً مريح للقراءة.
-
-عشان كذا نستخدم TO_CHAR لتحويل التاريخ إلى نص بالشكل اللي نبغاه:
-- DD: رقم اليوم في الشهر
-- Mon: اختصار اسم الشهر
-- YYYY: السنة كاملة
-- HH24: الساعة بنظام 24 ساعة
-- MI: الدقائق
-- SS: الثواني
-
-في المثال بنشوف الفرق بين طباعة التاريخ مباشرة وطباعته بعد استخدام TO_CHAR للتنسيق.`,
-            notes:
-`💡 ملاحظة مفيدة: TO_CHAR تقدر تستخدمها مع كل أنواع البيانات تقريباً لتحويلها إلى نص. لكن هي قوية بشكل خاص مع التواريخ لأنها تسمح لك بتنسيق مخصص.`,
-            visualDiagram: {
-              type: "date-formatting",
-              title: "تنسيق التاريخ والوقت",
-              description: "رموز التنسيق الشائعة للتاريخ والوقت"
-            },
-            example: {
-              title: "تحديث قيمة رقمية وتنسيق التاريخ",
-              lang: "plsql",
-              code:
-`SET SERVEROUTPUT ON;
-
-DECLARE
-  -- متغير تاريخ ووقت النظام الحالي
-  v_regdate DATE;
-  
-  -- متغير ثابت (لا يمكن تغييره بعد التعريف)
-  v_pctincr CONSTANT NUMBER(4,2) := 1.50;
-  
-  -- متغير عداد يبدأ من صفر
-  v_counter NUMBER := 0;
-BEGIN
-  -- نزيد العداد بمقدار 3
-  v_counter := v_counter + 3;
-  DBMS_OUTPUT.PUT_LINE('العداد الآن = ' || v_counter);
-  
-  -- زيادة العداد بنسبة v_pctincr (زيادة بـ 50%)
-  v_counter := v_counter * v_pctincr;
-  DBMS_OUTPUT.PUT_LINE('العداد بعد الزيادة بنسبة 50% = ' || v_counter);
-  
-  -- نخزن تاريخ ووقت النظام الحالي
-  v_regdate := SYSDATE;
-  
-  -- طرق مختلفة لعرض التاريخ
-  DBMS_OUTPUT.PUT_LINE('------- طرق عرض التاريخ -------');
-  DBMS_OUTPUT.PUT_LINE('التاريخ بدون تنسيق: ' || v_regdate); 
-  
-  -- تنسيق للتاريخ والوقت (بالعربي)
-  DBMS_OUTPUT.PUT_LINE('التاريخ منسق: ' || TO_CHAR(v_regdate, 'DD-MM-YYYY HH24:MI:SS'));
-  
-  -- تنسيق يظهر اسم اليوم واسم الشهر
-  DBMS_OUTPUT.PUT_LINE('اليوم والشهر: ' || TO_CHAR(v_regdate, 'Day, DD Month YYYY'));
-  
-  -- تنسيق للعرض باليوم الهجري (قد يتطلب ضبط NLS_CALENDAR)
-  DBMS_OUTPUT.PUT_LINE('ملاحظة: لعرض التاريخ الهجري، تحتاج ضبط NLS_CALENDAR');
-END;
-/
-`
-              ,
-              online: "https://onecompiler.com/oracle/"
-            },
-            tasks: [
-              "شغّل المثال وراقب الفرق بين طرق عرض التاريخ المختلفة.",
-              "غيّر العملية الحسابية لزيادة العداد من +3 إلى +5 وشغّل مرة أخرى.",
-              "جرّب تنسيق تاريخ آخر مثل 'YYYY/MM/DD' وأضفه للكود."
-            ]
-          },
-
-          {
-            id: "l2-3",
-            title: "أنواع المتغيرات وأفضل استخداماتها",
-            explanation:
-`يلا نلخص أهم أنواع المتغيرات والوقت المناسب لاستخدام كل نوع:
-
-1️⃣ VARCHAR2(n):
-- للنصوص والسلاسل النصية.
-- الـ n يحدد أقصى طول بالحروف.
-- مثال: أسماء، عناوين، أرقام هواتف (كنص).
-- ميزة: يستهلك مساحة بحسب طول النص الفعلي.
-
-2️⃣ NUMBER:
-- للأرقام بكل أنواعها (صحيحة وعشرية).
-- استخدام NUMBER(p,s) حيث p هو إجمالي الأرقام وs هو عدد الأرقام العشرية.
-- مثال: NUMBER(8,2) يعني 6 أرقام قبل الفاصلة و2 بعدها، مثل 123456.78
-
-3️⃣ INTEGER:
-- للأرقام الصحيحة فقط (بدون كسور).
-- مثال: أعداد الطلاب، العمر، عدد المنتجات.
-
-4️⃣ DATE:
-- للتواريخ والأوقات.
-- يخزن: التاريخ + الوقت معاً.
-- غالباً تحتاج TO_CHAR لعرضه بشكل مقروء.
-
-5️⃣ TIMESTAMP:
-- مثل DATE لكن بدقة أعلى (يضيف ميلي ثانية).
-- مناسب للتطبيقات التي تحتاج لقياس وقت دقيق.
-
-6️⃣ BOOLEAN:
-- للقيم المنطقية: TRUE / FALSE / NULL.
-- مناسب للتحقق من الشروط.`,
-            visualDiagram: {
-              type: "data-types",
-              title: "دليل مرئي لأنواع البيانات",
-              description: "متى تستخدم كل نوع من المتغيرات"
-            },
-            example: {
-              title: "استخدام أنواع مختلفة من المتغيرات - مثال عملي",
-              lang: "plsql",
-              code:
-`SET SERVEROUTPUT ON;
-
-DECLARE
-  -- متغيرات نصية
-  first_name  VARCHAR2(20) := 'خالد';
-  last_name   VARCHAR2(20) := 'العتيبي';
-  phone       VARCHAR2(15) := '0555123456';
-  
-  -- متغيرات رقمية
-  age         INTEGER := 25;               -- رقم صحيح
-  salary      NUMBER(10,2) := 12500.75;    -- رقم عشري (راتب)
-  temperature NUMBER(5,2) := 24.5;         -- درجة حرارة
-  
-  -- متغيرات تاريخ ووقت
-  birth_date  DATE := TO_DATE('05-10-1998', 'DD-MM-YYYY');
-  login_time  TIMESTAMP := SYSTIMESTAMP;
-  
-  -- متغيرات منطقية
-  is_student  BOOLEAN := TRUE;
-  has_car     BOOLEAN := FALSE;
-  
-  -- ثوابت (لا يمكن تغييرها)
-  MAX_GRADE   CONSTANT NUMBER := 100;
-  
-BEGIN
-  -- عرض بيانات المتغيرات النصية
-  DBMS_OUTPUT.PUT_LINE('الاسم الكامل: ' || first_name || ' ' || last_name);
-  DBMS_OUTPUT.PUT_LINE('رقم الهاتف: ' || phone);
-  
-  -- عرض بيانات المتغيرات الرقمية
-  DBMS_OUTPUT.PUT_LINE('العمر: ' || age || ' سنة');
-  DBMS_OUTPUT.PUT_LINE('الراتب: ' || salary || ' ريال');
-  
-  -- عرض بيانات التاريخ
-  DBMS_OUTPUT.PUT_LINE('تاريخ الميلاد: ' || TO_CHAR(birth_date, 'DD-MM-YYYY'));
-  DBMS_OUTPUT.PUT_LINE('تاريخ تسجيل الدخول: ' || TO_CHAR(login_time, 'DD-MM-YYYY HH24:MI:SS'));
-  
-  -- استخدام المتغيرات المنطقية في شروط
-  IF is_student THEN
-    DBMS_OUTPUT.PUT_LINE('الحالة: طالب');
-  ELSE
-    DBMS_OUTPUT.PUT_LINE('الحالة: غير طالب');
-  END IF;
-  
-  -- عرض العمر بعد 5 سنوات باستخدام عملية حسابية
-  DBMS_OUTPUT.PUT_LINE('العمر بعد 5 سنوات: ' || (age + 5) || ' سنة');
-  
-  -- استخدام الثابت
-  DBMS_OUTPUT.PUT_LINE('الدرجة القصوى: ' || MAX_GRADE);
-END;
-/
-`
-            },
-            tasks: [
-              "أضف متغير جديد للبريد الإلكتروني (email) واطبع قيمته.",
-              "حاول تغيير قيمة MAX_GRADE (ستظهر رسالة خطأ لأنه ثابت).",
-              "أضف شرط للتحقق من has_car وطباعة رسالة مناسبة."
-            ]
-          }
-        ],
-      }, 
-      {
-  id: "lab3",
-  title: "Lab 3 — التحكم الشرطي: IF و CASE (مبسّط جداً)",
-  objective: "تعلّم كيف تستخدم جمل IF و CASE في PL/SQL لاتخاذ قرارات بسيطة داخل البرنامج: IF-THEN، IF-THEN-ELSE، ELSIF، وركن CASE (البسيط والبحثي).",
-  prerequisites: [
-    "فكرة المتغيّر وكيف نطبّع باستخدام DBMS_OUTPUT.PUT_LINE",
-    "محاولة تشغيل أمثلة PL/SQL على OneCompiler لأن PL/SQL ما يشتغل في المتصفح"
-  ],
-  lessons: [
-    {
-      id: "l3-1",
-      title: "ليش نحتاج IF؟ (فكرة بسيطة)",
-      explanation:
-`الموضوع بسيط: أحياناً نبي البرنامج يسوي شي بس إذا تحققت حالة معينة. مثلاً: لو المبيعات أكبر من قيمة معينة نرسل رسالة.
-الجملة IF تسمح لنا نفحص شرط (مثل n_sales > 100000) وإذا كان صحيح (TRUE) ننفّذ الكود اللي جوّا THEN. لو الشرط غلط (FALSE) ما ينفّذ الشيء. 
-مهم: لو الشرط رجع NULL، يعتبر ما ينفّذ (يتعامل معه كغير TRUE).`,
-      notes: "ملاحظة: اختبر شرطة واحدة في البداية — مثلاً غيّر قيمة n_sales وشوف الفرق.",
-      example: {
-        title: "مثال بسيط: IF-THEN (نصّي وبسيط)",
-        lang: "plsql",
-        code:
-`SET SERVEROUTPUT ON;
-
-DECLARE
-  n_sales NUMBER := 2000000;
-BEGIN
-  IF n_sales > 100000 THEN
-    DBMS_OUTPUT.PUT_LINE('Sales revenue is greater than 100K');
-  END IF;
-END;
-/`
-      },
-      tasks: [
-        "غيّر قيمة n_sales إلى 50_000 وجرب — وش راح يطلع؟",
-        "جرب تحط n_sales := NULL; وش راح يصير عند التشغيل؟ (ملاحظة: ممكن ما تطلع رسالة لأن الشرط مش TRUE)."
-      ]
-    },
-
-    {
-      id: "l3-2",
-      title: "IF-THEN-ELSE — نفّذ خيارين (واحد لو الشرط صحيح وواحد لو خطأ)",
-      explanation:
-`هنا نوسّع الفكرة: IF-THEN-ELSE معناها: لو الشرط TRUE نفّذ المجموعة الأولى، وإلا (ELSE) نفّذ الثانية. مفيد لما تبي دائماً تطبّق واحد من خيارين.`,
-      example: {
-        title: "مثال: تحديد عمولة بسيطة حسب المبيعات",
-        lang: "plsql",
-        code:
-`SET SERVEROUTPUT ON;
-
-DECLARE
-  n_sales NUMBER := 300000;
-  n_commission NUMBER(10,2) := 0;
-BEGIN
-  IF n_sales > 200000 THEN
-    n_commission := n_sales * 0.10;
-    DBMS_OUTPUT.PUT_LINE('THE n_commission is EQUAL: ' || n_commission);
-  ELSE
-    n_commission := n_sales * 0.05;
-    DBMS_OUTPUT.PUT_LINE('THE n_commission is EQUAL: ' || n_commission);
-  END IF;
-END;
-/`
-      },
-      tasks: [
-        "غيّر شرط الـ IF إلى 250000 وشوف كيف تتغيّر النتيجة.",
-        "غيّر معدل العمولة في الفرعين (مثلاً 0.12 و0.06) وجرب."
-      ]
-    },
-
-    {
-      id: "l3-3",
-      title: "IF-THEN-ELSIF — أكثر من خيار (ترتيبي)",
-      explanation:
-`لو عندك أكثر من حالة تختبرها بالتتابع، تستعمل ELSIF. البرنامج يفحص الشرط الأول، إذا ما طلع TRUE يفحص الثاني، وهكذا. أول شرط ينطبق ينفّذ جوّاه ويتجاهل الباقي.`,
-      example: {
-        title: "مثال: تحويل حرف الدرجة إلى وصف",
-        lang: "plsql",
-        code:
-`SET SERVEROUTPUT ON;
-
-DECLARE
-  grade CHAR(1) := 'B';
-BEGIN
-  IF grade = 'A' THEN
-    DBMS_OUTPUT.PUT_LINE('Excellent');
-  ELSIF grade = 'B' THEN
-    DBMS_OUTPUT.PUT_LINE('Very Good');
-  ELSIF grade = 'C' THEN
-    DBMS_OUTPUT.PUT_LINE('Good');
-  ELSIF grade = 'D' THEN
-    DBMS_OUTPUT.PUT_LINE('Fair');
-  ELSIF grade = 'F' THEN
-    DBMS_OUTPUT.PUT_LINE('Poor');
-  ELSE
-    DBMS_OUTPUT.PUT_LINE('No such grade');
-  END IF;
-END;
-/`
-      },
-      tasks: [
-        "غيّر قيمة grade إلى 'A' و إلى 'F' وجرب كل مرة.",
-        "امسح الفرع الخاص بـ 'C' (احذفه) وجرب بgrade='C' — شنو يصير؟ (راح يطبع No such grade لأن ما في فرع يلائم)."
-      ]
-    },
-
-    {
-      id: "l3-4",
-      title: "CASE — متى نستخدمه؟ (فكرة بسيطة)",
-      explanation:
-`CASE يشبه IF بس طريقة الكتابة تختلف: CASE إما تكون بسيطة (تقارن قيمة مُحددة بقيم معينة) أو بحثية (searched CASE) حيث كل WHEN يفحص شرط. بعد ما يلاقي WHEN صحيح، ينفّذ ويسيب الباقي.
-ملاحظة مهمة: لو استخدمت searched CASE وما حطيت ELSE وما طلع أي WHEN صحيح، النظام يرفع استثناء CASE_NOT_FOUND — فالأفضل تحط ELSE لتحمي برنامجك.`,
-      notes: "نصيحة: استخدم simple CASE لو تقارن قيمة محددة (مثلاً grade)، واستخدم searched CASE لو كل WHEN عبارة عن شرط مختلف مثل BETWEEN أو علاقات أكبر/أصغر.",
-      example: {
-        title: "مثال بسيط: simple CASE على الدرجة",
-        lang: "plsql",
-        code:
-`SET SERVEROUTPUT ON;
-
-DECLARE
-  grade CHAR(1) := 'B';
-BEGIN
-  CASE grade
-    WHEN 'A' THEN DBMS_OUTPUT.PUT_LINE('Excellent');
-    WHEN 'B' THEN DBMS_OUTPUT.PUT_LINE('Very Good');
-    WHEN 'C' THEN DBMS_OUTPUT.PUT_LINE('Good');
-    WHEN 'D' THEN DBMS_OUTPUT.PUT_LINE('Fair');
-    WHEN 'F' THEN DBMS_OUTPUT.PUT_LINE('Poor');
-    ELSE DBMS_OUTPUT.PUT_LINE('No such grade');
-  END CASE;
-END;
-/`
-      },
-      tasks: [
-        "غيّر simple CASE إلى قيمة grade غير موجودة مثلاً 'Z' وجرب — وش راح يصير؟",
-        "أحذف ELSE وجرب بقيمة غير موجودة — لاحظ إن النظام يطلّع استثناء (CASE_NOT_FOUND)."
-      ]
-    },
-
-    {
-      id: "l3-5",
-      title: "Searched CASE — مفيد للمدى (مثال: الدرجات حسب النطاق)",
-      explanation:
-`هنا نستخدم WHEN مع شروط (مثلاً BETWEEN) عشان نحدد النتيجة حسب مدى (range). هذا مناسب لو تحب تقسم الدرجات إلى نطاقات.`,
-      example: {
-        title: "مثال: تحويل العلامة إلى حرف باستخدام searched CASE",
-        lang: "plsql",
-        code:
-`SET SERVEROUTPUT ON;
-
-DECLARE
-  v_mark NUMBER := 99; -- جرّب تغييره
-  v_grade CHAR(1);
-BEGIN
-  CASE
-    WHEN v_mark BETWEEN 80 AND 100 THEN v_grade := 'A';
-    WHEN v_mark BETWEEN 70 AND 79  THEN v_grade := 'B';
-    ELSE v_grade := 'F';
-  END CASE;
-
-  DBMS_OUTPUT.PUT_LINE('Grade: ' || v_grade);
-END;
-/
-`
-      },
-      tasks: [
-        "غيّر v_mark إلى 75 و إلى 60 وجرب كل مرة.",
-        "وسع النطاقات (مثلاً أضف WHEN v_mark BETWEEN 60 AND 69 THEN v_grade := 'C') وجرب."
-      ]
-    },
-
-    {
-      id: "l3-6",
-      title: "تمارين الملزمة (مترجَمة وبسيطة)",
-      explanation:
-`هذي التمارين اللي في ملزمة Lab3— كتبتها لك بصيغة جاهزة للتجربة على OneCompiler.`,
-      example: {
-        title: "تمرين Q1 — (IF - THEN - ELSIF) تحديد Pass / Fail",
-        lang: "plsql",
-        code:
-`SET SERVEROUTPUT ON;
-DECLARE
-  mark NUMBER := 75;
-  grade VARCHAR2(10);
-BEGIN
-  IF mark >= 70 THEN
-    grade := 'Pass';
-  ELSIF mark < 70 THEN
-    grade := 'Fail';
-  END IF;
-  DBMS_OUTPUT.PUT_LINE('The student grade is: ' || grade);
-END;
-/
-`
-      },
-      tasks: [
-        "غيّر قيمة mark إلى 65 و إلى 90 وجرب.",
-        "اجرب تخلي الشرط IF mark >= 70 ELSE... بدل ELSIF، لاحظ إنك ممكن تبسط المنطق."
-      ]
-    },
-
-    {
-      id: "l3-7",
-      title: "تمرين Q2 — (IF - THEN - ELSIF - ELSE) وصف الحرف",
-      explanation:
-`هذا نفس المثال اللي شرحناه فوق (تحويل حرف الدرجة إلى وصف). هنا نضمن ELSE عشان نتعامل مع القيم خارج النطاق.`,
-      example: {
-        title: "تمرين Q2 — حرف الدرجة إلى وصف",
-        lang: "plsql",
-        code:
-`SET SERVEROUTPUT ON;
-DECLARE
-  grade_char CHAR(1) := 'C';
-  grade VARCHAR2(20);
-BEGIN
-  IF grade_char = 'A' THEN
-    grade := 'Excellent';
-  ELSIF grade_char = 'B' THEN
-    grade := 'Very Good';
-  ELSIF grade_char = 'C' THEN
-    grade := 'Good';
-  ELSIF grade_char = 'D' THEN
-    grade := 'Pass';
-  ELSIF grade_char = 'F' THEN
-    grade := 'Fail';
-  ELSE
-    grade := 'Not on Range';
-  END IF;
-  DBMS_OUTPUT.PUT_LINE('The student grade is: ' || grade);
-END;
-/
-`
-      },
-      tasks: [
-        "غيّر grade_char إلى 'A' و إلى 'Z' وجرب.",
-        "حاول تحويل IF-ELSIF-ELSE إلى simple CASE (تمرّن على الصيغتين)."
-      ]
-    },
-
-    {
-      id: "l3-8",
-      title: "تمرين Q3 — Search CASE على نطاق العلامات",
-      explanation:
-`نستخدم searched CASE عشان نحدّد الحرف حسب نطاق العلامة. هذا نسخة جاهزة للتجربة.`,
-      example: {
-        title: "تمرين Q3 — Search CASE لتحديد الحرف",
-        lang: "plsql",
-        code:
-`SET SERVEROUTPUT ON;
-DECLARE
-  v_mark NUMBER := 99; -- جرّب تغييره
-  v_grade CHAR(1);
-BEGIN
-  CASE
-    WHEN v_mark BETWEEN 80 AND 100 THEN
-      v_grade := 'A';
-    WHEN v_mark BETWEEN 70 AND 79 THEN
-      v_grade := 'B';
-    ELSE
-      v_grade := 'F';
-  END CASE;
-
-  DBMS_OUTPUT.PUT_LINE('Grade: ' || v_grade);
-END;
-/
-`
-      },
-      tasks: [
-        "ادخل قيمة v_mark عند التشغيل (أو غيّرها في الكود) لتجربة حالات مختلفة.",
-        "أضف شرطًا جديدًا لـ C لو حبيت (مثلاً 60-69) وجرب."
-      ]
-    }
-  ],
-}
-];
+    </nav>
     
-   // Create visual diagram based on type
-    function createVisualDiagram(diagramConfig) {
-      const container = document.createElement('div');
-      container.className = 'visual-diagram';
-      
-      if (diagramConfig.title) {
-        container.innerHTML = `<h5 class="mb-3"><i class="fas fa-project-diagram me-2"></i>${diagramConfig.title}</h5>`;
-      }
-      
-      switch (diagramConfig.type) {
-        case 'plsql-block':
-          container.innerHTML += `
-            <div class="plsql-blocks">
-              <div class="plsql-block declare">
-                <h5>DECLARE</h5>
-                <p>تعريف المتغيرات والثوابت</p>
-              </div>
-              <div class="connect-arrow"><i class="fas fa-arrow-down"></i></div>
-              <div class="plsql-block begin">
-                <h5>BEGIN</h5>
-                <p>بداية الكود التنفيذي</p>
-              </div>
-              <div class="connect-arrow"><i class="fas fa-arrow-down"></i></div>
-              <div class="plsql-block exception">
-                <h5>EXCEPTION</h5>
-                <p>معالجة الأخطاء (اختياري)</p>
-              </div>
-              <div class="connect-arrow"><i class="fas fa-arrow-down"></i></div>
-              <div class="plsql-block end">
-                <h5>END;</h5>
-                <p>نهاية البلوك</p>
-              </div>
+    <!-- Search Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content bg-dark bg-opacity-95">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-center">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <h2 class="text-white text-center mb-4">What are you looking for?</h2>
+                                <div class="input-group mb-5">
+                                    <input type="text" class="form-control form-control-lg bg-transparent text-white border-0 border-bottom rounded-0" placeholder="Search for products..." aria-label="Search">
+                                    <button class="btn btn-outline-light rounded-0" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                                <div class="mt-5">
+                                    <h6 class="text-white-50 mb-3">Popular Searches:</h6>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Espresso</a>
+                                        <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Cold Brew</a>
+                                        <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Arabic Coffee</a>
+                                        <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Beans</a>
+                                        <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Moka Pot</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          `;
-          break;
-          
-        case 'null-vs-empty':
-          container.innerHTML += `
+        </div>
+    </div>
+    
+    <!-- Hero Section -->
+    <section class="hero mt-0">
+        <div class="container">
             <div class="row">
-              <div class="col-md-6">
-                <div class="card mb-3">
-                  <div class="card-header bg-primary text-white">NULL</div>
-                  <div class="card-body">
-                    <p>القيمة <strong>NULL</strong> تعني:</p>
-                    <ul>
-                      <li>غياب القيمة تماماً</li>
-                      <li>المتغير لا يحتوي على أي قيمة معروفة</li>
-                      <li>عند استخدامه مع || يُتجاهل تماماً</li>
-                      <li>LENGTH(NULL) تُرجع NULL</li>
-                    </ul>
-                    <div class="bg-light p-2 rounded small">
-                      <code>name VARCHAR2(20);</code><br>
-                      <code>-- قيمة name هي NULL</code>
+                <div class="col-lg-6">
+                    <span class="text-uppercase mb-2 d-block" style="color: var(--hm-accent); letter-spacing: 2px;">New Arrival</span>
+                    <h1 class="display-3 fw-bold mb-4">The Golden <br>Roast Experience</h1>
+                    <p class="lead mb-5 border-start border-3 ps-3" style="border-color: var(--hm-accent)!important;">Elevate your daily ritual with our carefully sourced, artisanally roasted signature blends.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#menu" class="btn btn-custom text-uppercase">Shop Now</a>
+                        <a href="#" class="btn btn-outline-light text-uppercase">Learn More</a>
                     </div>
-                  </div>
                 </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-header bg-info text-white">نص فارغ ''</div>
-                  <div class="card-body">
-                    <p>النص الفارغ <strong>''</strong> يعني:</p>
-                    <ul>
-                      <li>قيمة موجودة لكنها فارغة</li>
-                      <li>المتغير يحتوي على سلسلة نصية طولها صفر</li>
-                      <li>عند استخدامه مع || يظهر كمساحة فارغة</li>
-                      <li>LENGTH('') تُرجع 0</li>
-                    </ul>
-                    <div class="bg-light p-2 rounded small">
-                      <code>name VARCHAR2(20) := '';</code><br>
-                      <code>-- قيمة name هي نص فارغ</code>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-          `;
-          break;
-          
-        case 'date-formatting':
-          container.innerHTML += `
-            <div class="table-responsive">
-              <table class="table table-bordered">
-                <thead class="table-primary">
-                  <tr>
-                    <th>الرمز</th>
-                    <th>الوصف</th>
-                    <th>مثال</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><code>DD</code></td>
-                    <td>رقم اليوم في الشهر</td>
-                    <td>01-31</td>
-                  </tr>
-                  <tr>
-                    <td><code>MM</code></td>
-                    <td>رقم الشهر</td>
-                    <td>01-12</td>
-                  </tr>
-                  <tr>
-                    <td><code>Mon</code></td>
-                    <td>اختصار اسم الشهر</td>
-                    <td>Jan, Feb</td>
-                  </tr>
-                  <tr>
-                    <td><code>Month</code></td>
-                    <td>اسم الشهر كاملاً</td>
-                    <td>January, February</td>
-                  </tr>
-                  <tr>
-                    <td><code>YYYY</code></td>
-                    <td>السنة بأربعة أرقام</td>
-                    <td>2025</td>
-                  </tr>
-                  <tr>
-                    <td><code>HH24</code></td>
-                    <td>الساعة بنظام 24 ساعة</td>
-                    <td>00-23</td>
-                  </tr>
-                  <tr>
-                    <td><code>HH</code></td>
-                    <td>الساعة بنظام 12 ساعة</td>
-                    <td>01-12</td>
-                  </tr>
-                  <tr>
-                    <td><code>MI</code></td>
-                    <td>الدقائق</td>
-                    <td>00-59</td>
-                  </tr>
-                  <tr>
-                    <td><code>SS</code></td>
-                    <td>الثواني</td>
-                    <td>00-59</td>
-                  </tr>
-                  <tr>
-                    <td><code>Day</code></td>
-                    <td>اسم اليوم</td>
-                    <td>Sunday, Monday</td>
-                  </tr>
-                </tbody>
-              </table>
+        </div>
+    </section>
+    
+    <!-- Categories Section -->
+    <section class="container py-5 mt-3">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <h2 class="fw-bold mb-1">Browse Categories</h2>
+                <p class="text-muted">Discover our curated collection</p>
             </div>
-            <div class="alert alert-info mt-2">
-              <strong>مثال:</strong> TO_CHAR(SYSDATE, 'DD-MM-YYYY HH24:MI:SS')<br>
-              <strong>النتيجة:</strong> 28-09-2025 15:30:45
+            <a href="#" class="text-dark text-decoration-none fw-bold d-none d-md-block">
+                View All Categories <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1522992319-0365e5f081d3?q=80&w=500&auto=format&fit=crop" class="category-img" alt="Hot Coffee">
+                    <div class="category-overlay">
+                        <h5 class="category-title">Hot Coffee</h5>
+                    </div>
+                </div>
             </div>
-          `;
-          break;
-          
-        case 'data-types':
-          container.innerHTML += `
-            <div class="row">
-              <div class="col-md-6">
-                <div class="card mb-3">
-                  <div class="card-header bg-primary text-white">أنواع النصوص</div>
-                  <div class="card-body">
-                    <div class="d-flex mb-2">
-                      <div class="bg-light p-2 rounded me-2 flex-shrink-0">VARCHAR2(n)</div>
-                      <div>نص متغير الطول، يستهلك مساحة بقدر المستخدم فعلياً</div>
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1553909489-ec1f35221b95?q=80&w=500&auto=format&fit=crop" class="category-img" alt="Cold Coffee">
+                    <div class="category-overlay">
+                        <h5 class="category-title">Cold Coffee</h5>
                     </div>
-                    <div class="d-flex mb-2">
-                      <div class="bg-light p-2 rounded me-2 flex-shrink-0">CHAR(n)</div>
-                      <div>نص ثابت الطول، دائماً يستهلك المساحة كاملة</div>
-                    </div>
-                    <div class="d-flex">
-                      <div class="bg-light p-2 rounded me-2 flex-shrink-0">CLOB</div>
-                      <div>نص كبير جداً (يصل لجيجابايت)</div>
-                    </div>
-                  </div>
                 </div>
-                
-                <div class="card mb-3">
-                  <div class="card-header bg-success text-white">أنواع الأرقام</div>
-                  <div class="card-body">
-                    <div class="d-flex mb-2">
-                      <div class="bg-light p-2 rounded me-2 flex-shrink-0">NUMBER(p,s)</div>
-                      <div>أرقام بدقة محددة: p إجمالي الأرقام، s الأرقام بعد الفاصلة</div>
-                    </div>
-                    <div class="d-flex mb-2">
-                      <div class="bg-light p-2 rounded me-2 flex-shrink-0">INTEGER</div>
-                      <div>أرقام صحيحة فقط (بدون كسور)</div>
-                    </div>
-                    <div class="d-flex">
-                      <div class="bg-light p-2 rounded me-2 flex-shrink-0">BINARY_FLOAT</div>
-                      <div>أرقام عشرية بدقة منخفضة وأداء أفضل</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="col-md-6">
-                <div class="card mb-3">
-                  <div class="card-header bg-info text-white">أنواع التاريخ والوقت</div>
-                  <div class="card-body">
-                    <div class="d-flex mb-2">
-                      <div class="bg-light p-2 rounded me-2 flex-shrink-0">DATE</div>
-                      <div>تاريخ ووقت بدقة ثانية</div>
-                    </div>
-                    <div class="d-flex mb-2">
-                      <div class="bg-light p-2 rounded me-2 flex-shrink-0">TIMESTAMP</div>
-                      <div>تاريخ ووقت بدقة ميلي ثانية</div>
-                    </div>
-                    <div class="d-flex">
-                      <div class="bg-light p-2 rounded me-2 flex-shrink-0">INTERVAL</div>
-                      <div>فترة زمنية (أيام، ساعات، دقائق، إلخ)</div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="card">
-                  <div class="card-header bg-warning text-dark">أنواع أخرى</div>
-                  <div class="card-body">
-                    <div class="d-flex mb-2">
-                      <div class="bg-light p-2 rounded me-2 flex-shrink-0">BOOLEAN</div>
-                      <div>قيم منطقية: TRUE، FALSE، NULL</div>
-                    </div>
-                    <div class="d-flex mb-2">
-                      <div class="bg-light p-2 rounded me-2 flex-shrink-0">BLOB</div>
-                      <div>بيانات ثنائية كبيرة (صور، ملفات)</div>
-                    </div>
-                    <div class="d-flex">
-                      <div class="bg-light p-2 rounded me-2 flex-shrink-0">RAW</div>
-                      <div>بيانات ثنائية صغيرة</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-          `;
-          break;
-          
-        case 'sql-flow':
-          container.innerHTML += `
-            <div class="d-flex flex-column">
-              <div class="p-3 bg-primary text-white rounded mb-2 text-center">
-                <strong>CREATE TABLE</strong><br>
-                <small>إنشاء هيكل الجدول وتحديد الأعمدة وأنواعها</small>
-              </div>
-              <div class="text-center mb-2"><i class="fas fa-arrow-down"></i></div>
-              
-              <div class="p-3 bg-success text-white rounded mb-2 text-center">
-                <strong>INSERT INTO</strong><br>
-                <small>إضافة البيانات (الصفوف) إلى الجدول</small>
-              </div>
-              <div class="text-center mb-2"><i class="fas fa-arrow-down"></i></div>
-              
-              <div class="p-3 bg-info text-white rounded text-center">
-                <strong>SELECT</strong><br>
-                <small>استعلام واسترجاع البيانات من الجدول</small>
-              </div>
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1497636577773-f1231844b336?q=80&w=500&auto=format&fit=crop" class="category-img" alt="Beans">
+                    <div class="category-overlay">
+                        <h5 class="category-title">Coffee Beans</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1555778586-061e5dee1f70?q=80&w=500&auto=format&fit=crop" class="category-img" alt="Equipment">
+                    <div class="category-overlay">
+                        <h5 class="category-title">Equipment</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Products -->
+    <section id="menu" class="featured-section py-5 mt-4">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h6 class="text-uppercase fw-bold" style="color: var(--hm-accent); letter-spacing: 2px;">Discover</h6>
+                <h2 class="display-6 fw-bold mb-3">Our Bestsellers</h2>
+                <p class="text-muted mx-auto" style="max-width: 600px;">Crafted by our master baristas, these signature drinks have won the hearts of our customers with their exceptional flavors and quality.</p>
             </div>
             
-            <div class="row mt-3">
-              <div class="col-md-4 text-center">
-                <div class="bg-light p-2 rounded">
-                  <i class="fas fa-table fa-2x mb-2"></i><br>
-                  <strong>CREATE</strong><br>
-                  تعريف الهيكل
+            <div class="row g-4">
+                <!-- Product 1 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="product-card h-100">
+                        <div class="product-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1572442388796-11668a67ef84?q=80&w=800&auto=format&fit=crop" alt="Latte">
+                            <div class="product-badges">
+                                <span class="badge-custom badge-bestseller">Bestseller</span>
+                            </div>
+                            <div class="wishlist-icon">
+                                <i class="far fa-heart"></i>
+                            </div>
+                            <div class="product-overlay">
+                                <a href="product.html" class="btn btn-dark-custom rounded-0 mb-2">Quick View</a>
+                                <button class="btn btn-outline-dark rounded-0">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="card-body text-center p-4">
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="rating-count">(124)</span>
+                            </div>
+                            <h5 class="fw-bold mb-1 mt-2">Half Million Latte</h5>
+                            <p class="text-muted small mb-3 text-truncate-2">Rich espresso with silky micro-foam and creamy texture</p>
+                            <h6 class="fw-bold text-dark fs-5">22.00 SAR</h6>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="col-md-4 text-center">
-                <div class="bg-light p-2 rounded">
-                  <i class="fas fa-plus-circle fa-2x mb-2"></i><br>
-                  <strong>INSERT</strong><br>
-                  إضافة البيانات
+                
+                <!-- Product 2 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="product-card h-100">
+                        <div class="product-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=800&auto=format&fit=crop" alt="V60">
+                            <div class="product-badges">
+                                <span class="badge-custom badge-new">New</span>
+                            </div>
+                            <div class="wishlist-icon">
+                                <i class="far fa-heart"></i>
+                            </div>
+                            <div class="product-overlay">
+                                <a href="product.html" class="btn btn-dark-custom rounded-0 mb-2">Quick View</a>
+                                <button class="btn btn-outline-dark rounded-0">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="card-body text-center p-4">
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span class="rating-count">(87)</span>
+                            </div>
+                            <h5 class="fw-bold mb-1 mt-2">V60 Ethiopian</h5>
+                            <p class="text-muted small mb-3 text-truncate-2">Notes of jasmine and blueberry with a smooth finish</p>
+                            <h6 class="fw-bold text-dark fs-5">25.00 SAR</h6>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="col-md-4 text-center">
-                <div class="bg-light p-2 rounded">
-                  <i class="fas fa-search fa-2x mb-2"></i><br>
-                  <strong>SELECT</strong><br>
-                  استرجاع البيانات
+                
+                <!-- Product 3 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="product-card h-100">
+                        <div class="product-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?q=80&w=800&auto=format&fit=crop" alt="Cold Brew">
+                            <div class="wishlist-icon">
+                                <i class="far fa-heart"></i>
+                            </div>
+                            <div class="product-overlay">
+                                <a href="product.html" class="btn btn-dark-custom rounded-0 mb-2">Quick View</a>
+                                <button class="btn btn-outline-dark rounded-0">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="card-body text-center p-4">
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">(215)</span>
+                            </div>
+                            <h5 class="fw-bold mb-1 mt-2">Signature Cold Brew</h5>
+                            <p class="text-muted small mb-3 text-truncate-2">Steeped 24hrs for zero bitterness with chocolate notes</p>
+                            <h6 class="fw-bold text-dark fs-5">20.00 SAR</h6>
+                        </div>
+                    </div>
                 </div>
-              </div>
+                
+                <!-- Product 4 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="product-card h-100">
+                        <div class="product-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=800&auto=format&fit=crop" alt="Spanish Latte">
+                            <div class="product-badges">
+                                <span class="badge-custom">Limited</span>
+                            </div>
+                            <div class="wishlist-icon">
+                                <i class="far fa-heart"></i>
+                            </div>
+                            <div class="product-overlay">
+                                <a href="product.html" class="btn btn-dark-custom rounded-0 mb-2">Quick View</a>
+                                <button class="btn btn-outline-dark rounded-0">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="card-body text-center p-4">
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="rating-count">(98)</span>
+                            </div>
+                            <h5 class="fw-bold mb-1 mt-2">Spanish Latte</h5>
+                            <p class="text-muted small mb-3 text-truncate-2">Rich espresso with condensed milk and steamed milk</p>
+                            <h6 class="fw-bold text-dark fs-5">23.00 SAR</h6>
+                        </div>
+                    </div>
+                </div>
             </div>
-          `;
-          break;
-          
-        case 'tips-tricks':
-          container.innerHTML += `
-            <div class="row">
-              <div class="col-md-6">
-                <div class="card mb-3">
-                  <div class="card-header bg-primary text-white">أخطاء شائعة</div>
-                  <div class="card-body">
-                    <ul class="mb-0">
-                      <li>نسيان الفاصلة المنقوطة (;) في نهاية الأوامر</li>
-                      <li>استخدام = بدل := عند تعيين قيمة لمتغير</li>
-                      <li>نسيان SET SERVEROUTPUT ON قبل بدء البلوك</li>
-                      <li>كتابة اسم المتغير بشكل مختلف (حساس لحالة الأحرف)</li>
-                      <li>نسيان تحديد نوع المتغير عند التعريف</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-header bg-success text-white">نصائح للتعلم</div>
-                  <div class="card-body">
-                    <ul class="mb-0">
-                      <li>جرب كل مثال بنفسك وعدّل فيه</li>
-                      <li>اقرأ رسائل الخطأ بتمعن - تخبرك بالضبط ما المشكلة</li>
-                      <li>قم بتغيير شيء واحد في المرة ثم شغّل الكود</li>
-                      <li>أضف تعليقات في الكود توضح ما يفعله كل جزء</li>
-                      <li>استخدم OneCompiler للتجربة السريعة بدون تثبيت</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+            
+            <div class="text-center mt-5">
+                <a href="#" class="btn btn-outline-custom px-5">View All Products</a>
             </div>
-          `;
-          break;
-      }
-      
-      return container;
-    }
-    // UI references
-    const labsList = document.getElementById('labsList');
- 
-    const labTitle = document.getElementById('labTitle');
-    const labObjective = document.getElementById('labObjective');
-    const lessonsContainer = document.getElementById('lessonsContainer');
-    const labTabs = document.getElementById('labTabs');
-    const labTabElements = document.querySelectorAll('.lab-tab');
-    const lessonsTab = document.getElementById('lessonsTab');
-    const printTab = document.getElementById('printTab');
-    const labNav = document.getElementById('labNav');
-    const prevLabBtn = document.getElementById('prevLabBtn');
-    const nextLabBtn = document.getElementById('nextLabBtn');
-
-    // State variables
-    let selectedLabId = null;
-    let selectedTabId = 'lessons';
-    let SQLlib = null; // sql.js library reference
-
-    // Event listeners for lab navigation
-    prevLabBtn.addEventListener('click', navigateToPrevLab);
-    nextLabBtn.addEventListener('click', navigateToNextLab);
-
+        </div>
+    </section>
     
-    // Print lab button
-    document.getElementById('printLabBtn').addEventListener('click', () => {
-      window.print();
-    });
+    <!-- Collection Showcase -->
+    <section class="container py-5 mt-3">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1611854779393-1b2da9d400fe?q=80&w=1000&auto=format&fit=crop" class="img-fluid rounded-4" alt="Coffee Beans">
+                    <div class="position-absolute bottom-0 start-0 p-4 p-lg-5">
+                        <h3 class="text-white fw-bold mb-3">Single Origin<br>Collection</h3>
+                        <a href="#" class="btn btn-custom">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1559553156-2e97137af16f?q=80&w=500&auto=format&fit=crop" class="img-fluid rounded-4" alt="Brewing Equipment">
+                            <div class="position-absolute bottom-0 start-0 p-3 p-lg-4">
+                                <h5 class="text-white fw-bold mb-2">Brewing<br>Equipment</h5>
+                                <a href="#" class="text-white text-decoration-none fw-bold">
+                                    View Collection <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="position-relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1587080413959-06b859fb107d?q=80&w=500&auto=format&fit=crop" class="img-fluid rounded-4" alt="Specialty Coffee">
+                            <div class="position-absolute bottom-0 start-0 p-3 p-lg-4">
+                                <h5 class="text-white fw-bold mb-2">Specialty<br>Coffee</h5>
+                                <a href="#" class="text-white text-decoration-none fw-bold">
+                                    View Collection <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=500&auto=format&fit=crop" class="img-fluid rounded-4" alt="Gift Sets">
+                            <div class="position-absolute bottom-0 start-0 p-3 p-lg-4">
+                                <h5 class="text-white fw-bold mb-2">Premium<br>Gift Sets</h5>
+                                <a href="#" class="text-white text-decoration-none fw-bold">
+                                    View Collection <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     
-
+    <!-- Customer Testimonials -->
+    <section class="container py-5 mt-3">
+        <div class="text-center mb-5">
+            <h6 class="text-uppercase fw-bold" style="color: var(--hm-accent); letter-spacing: 2px;">Testimonials</h6>
+            <h2 class="display-6 fw-bold mb-3">What Our Customers Say</h2>
+            <p class="text-muted mx-auto" style="max-width: 600px;">Real experiences from our coffee enthusiasts around the kingdom.</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=120&auto=format&fit=crop" class="testimonial-avatar" alt="Customer">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Ahmed Al-Saud</h6>
+                            <small class="text-muted">Riyadh</small>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <p class="mb-0">"Their Spanish Latte is the best I've ever had. The condensed milk ratio is perfect, and the espresso quality is exceptional. Now it's part of my daily morning ritual."</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=120&auto=format&fit=crop" class="testimonial-avatar" alt="Customer">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Fatima H.</h6>
+                            <small class="text-muted">Jeddah</small>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <p class="mb-0">"I ordered their Ethiopian beans and V60 equipment. The shipping was fast, and the coffee tastes incredible - bright with floral notes. Their customer service was also very helpful."</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&auto=format&fit=crop" class="testimonial-avatar" alt="Customer">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Khalid M.</h6>
+                            <small class="text-muted">Dammam</small>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star-half-alt text-warning"></i>
+                    </div>
+                    <p class="mb-0">"The Cold Brew is a game changer during hot summer days. Smooth, not bitter at all, and keeps me energized. I love that they deliver it in a reusable glass bottle."</p>
+                </div>
+            </div>
+        </div>
+    </section>
     
-
-    // Render labs list
-    function renderLabsList(filter = '') {
-      labsList.innerHTML = '';
-      if (!Array.isArray(labs)) return;
-      
-      const filtered = labs.filter(l => 
-        !filter || 
-        l.title.includes(filter) || 
-        l.id.includes(filter)
-      );
-      
-      filtered.forEach(l => {
-        const btn = document.createElement('button');
-        btn.className = 'list-group-item list-group-item-action';
-        btn.textContent = l.title;
-        btn.onclick = () => selectLab(l.id);
-        labsList.appendChild(btn);
-      });
-    }
-
-    // Select lab
-    function selectLab(id) {
-      const lab = labs.find(x => x.id === id);
-      if (!lab) return;
-      
-      selectedLabId = id;
-      labTitle.textContent = lab.title;
-      labObjective.innerHTML = `<strong>الهدف من الدرس:</strong> ${lab.objective}`;
-      
-      
-      // Show lab navigation
-      updateLabNavigation();
-      
-      
-      // Render lessons
-      renderLessons(lab);
-      
-
-      // Scroll to top
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    }
-
-    // Navigate to previous lab
-    function navigateToPrevLab() {
-      if (!selectedLabId) return;
-      
-      const currentIndex = labs.findIndex(l => l.id === selectedLabId);
-      if (currentIndex > 0) {
-        selectLab(labs[currentIndex - 1].id);
-      }
-    }
-
-    // Navigate to next lab
-    function navigateToNextLab() {
-      if (!selectedLabId) return;
-      
-      const currentIndex = labs.findIndex(l => l.id === selectedLabId);
-      if (currentIndex < labs.length - 1) {
-        selectLab(labs[currentIndex + 1].id);
-      }
-    }
-
-    // Update lab navigation buttons
-    function updateLabNavigation() {
-      const currentIndex = labs.findIndex(l => l.id === selectedLabId);
-      
-      if (currentIndex === -1) {
-        labNav.classList.add('d-none');
-        return;
-      }
-      
-      labNav.classList.remove('d-none');
-      
-      // Update prev button
-      if (currentIndex === 0) {
-        prevLabBtn.disabled = true;
-        prevLabBtn.classList.add('disabled');
-      } else {
-        prevLabBtn.disabled = false;
-        prevLabBtn.classList.remove('disabled');
-      }
-      
-      // Update next button
-      if (currentIndex === labs.length - 1) {
-        nextLabBtn.disabled = true;
-        nextLabBtn.classList.add('disabled');
-      } else {
-        nextLabBtn.disabled = false;
-        nextLabBtn.classList.remove('disabled');
-      }
-    }
-
-
-    // Render lessons
-    function renderLessons(lab) {
-      lessonsContainer.innerHTML = '';
-      
-      if (!lab.lessons || !lab.lessons.length) {
-        lessonsContainer.innerHTML = '<div class="alert alert-info">لا توجد دروس متاحة في هذا الدرس بعد.</div>';
-        return;
-      }
-      
-      lab.lessons.forEach((lesson, idx) => {
-        // Skip lessons without titles
-        if (!lesson.title) return;
+    <!-- Instagram Feed -->
+    <section class="container-fluid px-0 py-5">
+        <div class="text-center mb-5">
+            <h6 class="text-uppercase fw-bold" style="color: var(--hm-accent); letter-spacing: 2px;">Follow Us</h6>
+            <h2 class="display-6 fw-bold mb-3">@halfmillion</h2>
+            <p class="text-muted mx-auto" style="max-width: 600px;">Join our community on Instagram and share your Half Million moments with us.</p>
+        </div>
         
-        const card = document.createElement('div');
-        card.className = 'lesson-card animate__animated animate__fadeIn';
-        card.id = `lesson-${lab.id}-${lesson.id}`;
+        <div class="row g-1">
+            <div class="col-lg-2 col-md-4 col-6">
+                <div class="position-relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=400&auto=format&fit=crop" class="w-100" style="aspect-ratio: 1/1; object-fit: cover;" alt="Instagram">
+                    <div class="position-absolute inset-0 bg-dark bg-opacity-0 d-flex align-items-center justify-content-center hover-overlay transition-all" style="opacity: 0; transition: all 0.3s;">
+                        <a href="#" class="text-white fs-4">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+                <div class="position-relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=400&auto=format&fit=crop" class="w-100" style="aspect-ratio: 1/1; object-fit: cover;" alt="Instagram">
+                    <div class="position-absolute inset-0 bg-dark bg-opacity-0 d-flex align-items-center justify-content-center hover-overlay" style="opacity: 0; transition: all 0.3s;">
+                        <a href="#" class="text-white fs-4">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+                <div class="position-relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400&auto=format&fit=crop" class="w-100" style="aspect-ratio: 1/1; object-fit: cover;" alt="Instagram">
+                    <div class="position-absolute inset-0 bg-dark bg-opacity-0 d-flex align-items-center justify-content-center hover-overlay" style="opacity: 0; transition: all 0.3s;">
+                        <a href="#" class="text-white fs-4">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+                <div class="position-relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400&auto=format&fit=crop" class="w-100" style="aspect-ratio: 1/1; object-fit: cover;" alt="Instagram">
+                    <div class="position-absolute inset-0 bg-dark bg-opacity-0 d-flex align-items-center justify-content-center hover-overlay" style="opacity: 0; transition: all 0.3s;">
+                        <a href="#" class="text-white fs-4">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+                <div class="position-relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=400&auto=format&fit=crop" class="w-100" style="aspect-ratio: 1/1; object-fit: cover;" alt="Instagram">
+                    <div class="position-absolute inset-0 bg-dark bg-opacity-0 d-flex align-items-center justify-content-center hover-overlay" style="opacity: 0; transition: all 0.3s;">
+                        <a href="#" class="text-white fs-4">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+                <div class="position-relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1572286258217-215f7e67e96a?q=80&w=400&auto=format&fit=crop" class="w-100" style="aspect-ratio: 1/1; object-fit: cover;" alt="Instagram">
+                    <div class="position-absolute inset-0 bg-dark bg-opacity-0 d-flex align-items-center justify-content-center hover-overlay" style="opacity: 0; transition: all 0.3s;">
+                        <a href="#" class="text-white fs-4">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter Section -->
+    <section class="featured-section py-5">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <h2 class="display-6 fw-bold mb-3">Join Our Community</h2>
+                    <p class="lead mb-4">Subscribe to get special offers, free giveaways, and early access to new product releases.</p>
+                    <form id="newsletter-form" class="d-flex gap-2">
+                        <input type="email" class="form-control" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-dark-custom">Subscribe</button>
+                    </form>
+                </div>
+                <div class="col-lg-6">
+                    <img src="https://images.unsplash.com/photo-1516486392848-8b67ef89f113?q=80&w=600&auto=format&fit=crop" class="img-fluid rounded-4" alt="Newsletter">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container py-5">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html" class="text-dark text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item"><a href="#" class="text-dark text-decoration-none">Hot Coffee</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Half Million Latte</li>
+            </ol>
+        </nav>
         
-        // Lesson header
-        const header = document.createElement('div');
-        header.className = 'lesson-header';
-        header.innerHTML = `
-          <div>
-            <h3 class="lesson-title">${lesson.title}</h3>
-
-          </div>
-
-        `;
-        card.appendChild(header);
+        <div class="row g-5">
+            <div class="col-lg-6">
+                <div class="sticky-col">
+                    <img id="main-product-image" src="https://images.unsplash.com/photo-1572442388796-11668a67ef84?q=80&w=1000&auto=format&fit=crop" class="img-fluid gallery-img mb-3" alt="Latte">
+                    
+                    <div class="d-flex gap-3">
+                        <img src="https://images.unsplash.com/photo-1572442388796-11668a67ef84?q=80&w=1000&auto=format&fit=crop" class="thumb-img active" alt="Latte Front View">
+                        <img src="https://images.unsplash.com/photo-1574914629385-46448bc77ae3?q=80&w=1000&auto=format&fit=crop" class="thumb-img" alt="Latte Top View">
+                        <img src="https://images.unsplash.com/photo-1544078751-58fee2d8a03b?q=80&w=1000&auto=format&fit=crop" class="thumb-img" alt="Latte with Art">
+                        <img src="https://images.unsplash.com/photo-1564242348835-82e69c7bb74e?q=80&w=1000&auto=format&fit=crop" class="thumb-img" alt="Latte Preparation">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-dark rounded-0 px-3 py-2">Bestseller</span>
+                        <span class="badge bg-success rounded-0 px-3 py-2">In Stock</span>
+                    </div>
+                    <button class="btn btn-outline-dark rounded-circle p-2" type="button">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                
+                <h1 class="display-5 fw-bold mb-2">Half Million Latte</h1>
+                
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="product-rating">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star-half-alt text-warning"></i>
+                    </div>
+                    <span class="text-muted">(124 reviews)</span>
+                </div>
+                
+                <p class="text-muted mb-4 border-bottom pb-4">Our signature creation. Double ristretto shots combined with our secret textured milk blend, offering a perfectly balanced, naturally sweet profile without any added syrups. A Half Million specialty that has become our customers' favorite.</p>
+                
+                <h2 class="fw-bold mb-4" id="price-display">22.00 SAR</h2>
+                
+                <div class="mb-4">
+                    <h6 class="fw-bold text-uppercase mb-3">Temperature</h6>
+                    <div class="d-flex gap-2">
+                        <input type="radio" class="btn-check" name="temp" id="hot" checked>
+                        <label class="btn btn-outline-dark px-4 py-2" for="hot">
+                            <i class="fas fa-fire-alt me-2"></i>Hot
+                        </label>
+                        
+                        <input type="radio" class="btn-check" name="temp" id="iced">
+                        <label class="btn btn-outline-dark px-4 py-2" for="iced">
+                            <i class="fas fa-snowflake me-2"></i>Iced
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h6 class="fw-bold text-uppercase mb-3">Size</h6>
+                    <div class="d-flex gap-2">
+                        <input type="radio" class="btn-check" name="size" id="size-reg" value="22" checked onchange="updatePrice()">
+                        <label class="btn btn-outline-dark px-4 py-2" for="size-reg">Regular</label>
+                        
+                        <input type="radio" class="btn-check" name="size" id="size-lrg" value="26" onchange="updatePrice()">
+                        <label class="btn btn-outline-dark px-4 py-2" for="size-lrg">Large (+4 SAR)</label>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h6 class="fw-bold text-uppercase mb-3">Milk Options</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        <input type="radio" class="btn-check" name="milk" id="milk-reg" checked>
+                        <label class="btn btn-outline-dark px-3 py-2" for="milk-reg">Regular</label>
+                        
+                        <input type="radio" class="btn-check" name="milk" id="milk-skim">
+                        <label class="btn btn-outline-dark px-3 py-2" for="milk-skim">Skim</label>
+                        
+                        <input type="radio" class="btn-check" name="milk" id="milk-almond">
+                        <label class="btn btn-outline-dark px-3 py-2" for="milk-almond">Almond</label>
+                        
+                        <input type="radio" class="btn-check" name="milk" id="milk-oat">
+                        <label class="btn btn-outline-dark px-3 py-2" for="milk-oat">Oat</label>
+                    </div>
+                </div>
+                
+                <div class="d-flex gap-3 mb-4 mt-5">
+                    <div class="border d-flex align-items-center justify-content-center px-3" style="width: 120px; height: 54px;">
+                        <button class="btn btn-link text-dark px-2" onclick="document.getElementById('qty').stepDown()">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" class="form-control border-0 text-center shadow-none fw-bold" value="1" min="1" max="10" id="qty" style="width: 40px;">
+                        <button class="btn btn-link text-dark px-2" onclick="document.getElementById('qty').stepUp()">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <button class="btn btn-custom flex-grow-1" onclick="addToCart()">Add to Bag</button>
+                </div>
+                
+                <a href="checkout.html" class="btn btn-outline-dark w-100 py-3 rounded-0 d-none fw-bold" id="checkout-btn">
+                    <i class="fas fa-lock me-2"></i> Proceed to Secure Checkout
+                </a>
+                
+                <div class="d-flex flex-wrap gap-3 mt-4 mb-5">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-truck text-muted me-2"></i>
+                        <span class="small text-muted">Free delivery on orders over 99 SAR</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-undo text-muted me-2"></i>
+                        <span class="small text-muted">Easy 30-day returns</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-shield-alt text-muted me-2"></i>
+                        <span class="small text-muted">Secure checkout</span>
+                    </div>
+                </div>
+                
+                <div class="accordion accordion-flush mt-3 border-top" id="productSpecs">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold px-0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-1">
+                                Description
+                            </button>
+                        </h2>
+                        <div id="flush-1" class="accordion-collapse collapse" data-bs-parent="#productSpecs">
+                            <div class="accordion-body px-0 text-muted">
+                                <p>Our signature Half Million Latte is crafted with precision and passion. It starts with our house blend espresso – a perfectly balanced combination of Brazilian and Colombian beans, roasted to highlight caramel and chocolate notes.</p>
+                                <p>The espresso is extracted as a double ristretto to concentrate the flavor, then combined with our premium milk that's steamed to a silky microfoam texture. The result is a naturally sweet, velvety smooth latte with a rich mouthfeel and perfect balance between coffee strength and milk sweetness.</p>
+                                <p>Each latte is finished with our signature latte art, making it as beautiful as it is delicious.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold px-0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-2">
+                                Ingredients & Allergens
+                            </button>
+                        </h2>
+                        <div id="flush-2" class="accordion-collapse collapse" data-bs-parent="#productSpecs">
+                            <div class="accordion-body px-0 text-muted">
+                                <p><strong>Ingredients:</strong> Espresso (100% Arabica coffee beans), milk</p>
+                                <p><strong>Contains:</strong> Dairy (when made with regular milk)</p>
+                                <p><strong>Espresso blend:</strong> 70% Brazil, 30% Colombia</p>
+                                <p>Allergen information: Our products are prepared in an environment that handles nuts, wheat, and other allergens. Please inform our baristas of any allergies when ordering in store.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold px-0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-3">
+                                Nutrition Information
+                            </button>
+                        </h2>
+                        <div id="flush-3" class="accordion-collapse collapse" data-bs-parent="#productSpecs">
+                            <div class="accordion-body px-0 text-muted">
+                                <p>Regular size with whole milk:</p>
+                                <ul>
+                                    <li>Calories: 120 kcal</li>
+                                    <li>Protein: 6g</li>
+                                    <li>Fat: 6g</li>
+                                    <li>Carbohydrates: 10g</li>
+                                    <li>Sugar: 8g (naturally occurring in milk)</li>
+                                    <li>Caffeine: 136mg</li>
+                                </ul>
+                                <p>Values may vary slightly between batches. Alternative milk options will alter nutritional content.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- Left Side: Checkout Form -->
+            <div class="col-lg-7 p-4 p-md-5">
+                <div class="mx-auto" style="max-width: 600px;">
+                    <!-- Progress Steps -->
+                    <div class="d-flex justify-content-between mb-5">
+                        <div class="checkout-step current">
+                            <span class="step-number active bg-dark text-white">1</span>
+                            <span class="step-text fw-bold text-dark">Information</span>
+                        </div>
+                        <div class="position-relative" style="width: 80px;">
+                            <div class="progress" style="height: 2px; margin-top: 20px;">
+                                <div class="progress-bar bg-dark" role="progressbar" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="checkout-step">
+                            <span class="step-number bg-secondary bg-opacity-10 text-muted">2</span>
+                            <span class="step-text text-muted">Shipping</span>
+                        </div>
+                        <div class="position-relative" style="width: 80px;">
+                            <div class="progress" style="height: 2px; margin-top: 20px;">
+                                <div class="progress-bar bg-secondary bg-opacity-10" role="progressbar" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="checkout-step">
+                            <span class="step-number bg-secondary bg-opacity-10 text-muted">3</span>
+                            <span class="step-text text-muted">Payment</span>
+                        </div>
+                    </div>
+                    
+                    <form onsubmit="processOrder(event)">
+                        <h4 class="fw-bold mb-4">Contact Information</h4>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                            <label for="email">Email address</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="tel" class="form-control" id="phone" placeholder="Phone number" required>
+                            <label for="phone">Phone number</label>
+                        </div>
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" value="" id="newsletter">
+                            <label class="form-check-label text-muted" for="newsletter">
+                                Keep me updated on new products, exclusive offers, and more
+                            </label>
+                        </div>
+                        
+                        <h4 class="fw-bold mb-4 mt-5">Delivery Details</h4>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="fname" placeholder="First Name" required>
+                                    <label for="fname">First name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="lname" placeholder="Last Name" required>
+                                    <label for="lname">Last name</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="address" placeholder="Address" required>
+                            <label for="address">Address (District, Street)</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="address2" placeholder="Apartment, suite, etc. (optional)">
+                            <label for="address2">Apartment, suite, etc. (optional)</label>
+                        </div>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <select class="form-select" id="city" required>
+                                        <option selected disabled value="">Select</option>
+                                        <option>Riyadh</option>
+                                        <option>Jeddah</option>
+                                        <option>Dammam</option>
+                                        <option>Makkah</option>
+                                        <option>Madinah</option>
+                                    </select>
+                                    <label for="city">City</label>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-floating">
+                                    <select class="form-select" id="region" required>
+                                        <option selected disabled value="">Select</option>
+                                        <option>Riyadh Region</option>
+                                        <option>Makkah Region</option>
+                                        <option>Eastern Province</option>
+                                        <option>Asir</option>
+                                        <option>Jizan</option>
+                                    </select>
+                                    <label for="region">Region</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="postal" placeholder="Postal Code">
+                                    <label for="postal">Postal Code</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-floating mb-4">
+                            <textarea class="form-control" id="notes" placeholder="Order notes" style="height: 100px"></textarea>
+                            <label for="notes">Order notes (optional)</label>
+                        </div>
+                        
+                        <h4 class="fw-bold mb-4 mt-5">Delivery Options</h4>
+                        <div class="card mb-3 border payment-card active">
+                            <div class="card-body p-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="delivery" id="standard" checked>
+                                    <label class="form-check-label d-flex justify-content-between align-items-center w-100" for="standard">
+                                        <div>
+                                            <span class="fw-bold d-block">Standard Delivery</span>
+                                            <small class="text-muted">2-4 business days</small>
+                                        </div>
+                                        <span class="fw-bold">Free</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-5 border payment-card">
+                            <div class="card-body p-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="delivery" id="express">
+                                    <label class="form-check-label d-flex justify-content-between align-items-center w-100" for="express">
+                                        <div>
+                                            <span class="fw-bold d-block">Express Delivery</span>
+                                            <small class="text-muted">1-2 business days</small>
+                                        </div>
+                                        <span class="fw-bold">15.00 SAR</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h4 class="fw-bold mb-4 mt-5">Payment</h4>
+                        <div class="card mb-3 border payment-card active">
+                            <div class="card-body p-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="payment" id="cc" checked>
+                                    <label class="form-check-label d-flex justify-content-between align-items-center w-100" for="cc">
+                                        <span class="fw-bold">Credit Card / Mada</span>
+                                        <div>
+                                            <i class="fab fa-cc-visa fs-5 text-primary me-1"></i>
+                                            <i class="fab fa-cc-mastercard fs-5 text-danger me-1"></i>
+                                            <i class="fab fa-cc-amex fs-5 text-info"></i>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="cc-details" class="mb-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="card-number" placeholder="Card Number" required>
+                                <label for="card-number">Card number</label>
+                            </div>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="card-expiry" placeholder="MM/YY" required>
+                                        <label for="card-expiry">Expiration date (MM/YY)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="card-cvv" placeholder="Security code" required>
+                                        <label for="card-cvv">Security code</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="card-name" placeholder="Name on card" required>
+                                <label for="card-name">Name on card</label>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-5 border payment-card">
+                            <div class="card-body p-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="payment" id="cod">
+                                    <label class="form-check-label d-flex justify-content-between align-items-center w-100" for="cod">
+                                        <div>
+                                            <span class="fw-bold d-block">Cash on Delivery</span>
+                                            <small class="text-muted">Pay when you receive your order</small>
+                                        </div>
+                                        <i class="fas fa-money-bill-wave fs-5 text-success"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-5">
+                            <a href="index.html" class="text-dark text-decoration-none">
+                                <i class="fas fa-arrow-left me-2"></i> Return to Shop
+                            </a>
+                            <button class="btn btn-custom px-5" type="submit">Complete Order</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Right Side: Order Summary -->
+            <div class="col-lg-5 summary-pane d-none d-lg-block">
+                <div class="mx-auto" style="max-width: 450px;">
+                    <h4 class="fw-bold mb-4">Order Summary</h4>
+                    
+                    <div id="cart-summary">
+                        <!-- Cart items will be dynamically inserted here -->
+                        <div class="d-flex align-items-center mb-4 pb-4 border-bottom border-secondary-subtle">
+                            <div class="position-relative me-3">
+                                <img src="https://images.unsplash.com/photo-1572442388796-11668a67ef84?q=80&w=200&auto=format&fit=crop" alt="Latte" class="item-img shadow-sm">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-dark border border-white" style="padding: 6px 8px;">1</span>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="fw-bold mb-0">Half Million Latte</h6>
+                                <small class="text-muted">Size: Regular / Hot</small>
+                            </div>
+                            <div class="fw-bold">22.00 SAR</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-body p-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Promo code" aria-label="Promo code">
+                                <button class="btn btn-dark px-4" type="button">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mb-2 text-muted">
+                        <span>Subtotal</span>
+                        <span id="subtotal-amount">22.00 SAR</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2 text-muted">
+                        <span>Shipping</span>
+                        <span>Free</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4 text-muted pb-4 border-bottom border-secondary-subtle">
+                        <span>Taxes (VAT 15%)</span>
+                        <span id="tax-amount">3.30 SAR</span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-5">
+                        <span class="fs-5 fw-bold">Total</span>
+                        <div class="text-end">
+                            <span class="text-muted small me-2">SAR</span>
+                            <span id="total-amount" class="fs-3 fw-bold">25.30</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-light p-4 rounded-3">
+                        <h6 class="fw-bold mb-3">Need Help?</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <a href="#" class="text-decoration-none text-muted">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Shipping Information
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="#" class="text-decoration-none text-muted">
+                                    <i class="fas fa-exchange-alt me-2"></i>
+                                    Return Policy
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="text-decoration-none text-muted">
+                                    <i class="fas fa-question-circle me-2"></i>
+                                    FAQs
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <div class="d-flex justify-content-center mb-3">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" class="me-3" width="24" alt="Apple Pay">
+                            <i class="fab fa-cc-visa fs-4 text-primary me-3"></i>
+                            <i class="fab fa-cc-mastercard fs-4 text-danger me-3"></i>
+                            <i class="fab fa-cc-amex fs-4 text-info"></i>
+                        </div>
+                        <small class="text-muted">Secure Checkout by Half Million</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <a href="index.html" class="footer-logo">HALF MILLION</a>
+                    <p class="text-muted mb-4">Elevating your coffee experience with premium blends and expertly crafted beverages since 2020.</p>
+                    <div class="d-flex mb-3">
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Quick Links</h5>
+                    <a href="#" class="footer-link">Our Story</a>
+                    <a href="#" class="footer-link">Menu</a>
+                    <a href="#" class="footer-link">Locations</a>
+                    <a href="#" class="footer-link">Rewards Program</a>
+                    <a href="#" class="footer-link">Careers</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Customer Service</h5>
+                    <a href="#" class="footer-link">Contact Us</a>
+                    <a href="#" class="footer-link">FAQs</a>
+                    <a href="#" class="footer-link">Shipping & Returns</a>
+                    <a href="#" class="footer-link">Store Policy</a>
+                    <a href="#" class="footer-link">Payment Methods</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Newsletter</h5>
+                    <p class="text-muted mb-3">Get the latest updates and offers.</p>
+                    <div class="footer-subscribe">
+                        <input type="email" placeholder="Your email">
+                        <button><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom d-flex justify-content-between align-items-center flex-wrap">
+                <p class="text-muted small mb-0">&copy; 2026 Half Million Coffee. All Rights Reserved.</p>
+                <div>
+                    <a href="#" class="footer-bottom-link">Privacy Policy</a>
+                    <a href="#" class="footer-bottom-link">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Global Variables
+        let cartItems = JSON.parse(localStorage.getItem('halfMillionCart')) || [];
+        const cartBadge = document.getElementById('cart-badge');
         
-        // Explanation
-        if (lesson.explanation) {
-          const expl = document.createElement('div');
-          expl.className = 'lesson-explanation';
-          expl.innerHTML = lesson.explanation.replace(/\n/g, '<br>');
-          card.appendChild(expl);
+        // Update cart badge on page load
+        function updateCartBadge() {
+            if (cartBadge) {
+                const totalQty = cartItems.reduce((sum, item) => sum + item.qty, 0);
+                cartBadge.textContent = totalQty;
+                cartBadge.style.display = totalQty > 0 ? 'block' : 'none';
+            }
         }
         
-        // Notes/Hints
-        if (lesson.notes) {
-          const note = document.createElement('div');
-          note.className = 'hint-box';
-          note.innerHTML = `<i class="fas fa-lightbulb text-warning me-2"></i>${lesson.notes.replace(/\n/g, '<br>')}`;
-          card.appendChild(note);
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartBadge();
+            
+            // Navbar scroll effect
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                });
+            }
+            
+            // Product gallery thumbnail functionality
+            const mainImage = document.getElementById('main-product-image');
+            const thumbnails = document.querySelectorAll('.thumb-img');
+            
+            if (mainImage && thumbnails.length > 0) {
+                thumbnails.forEach(thumb => {
+                    thumb.addEventListener('click', () => {
+                        // Remove active class from all thumbnails
+                        thumbnails.forEach(t => t.classList.remove('active'));
+                        // Add active class to clicked thumbnail
+                        thumb.classList.add('active');
+                        // Update main image src
+                        mainImage.src = thumb.src;
+                    });
+                });
+            }
+            
+            // Add to wishlist functionality
+            const wishlistBtns = document.querySelectorAll('.wishlist-icon');
+            if (wishlistBtns) {
+                wishlistBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        btn.classList.toggle('active');
+                        
+                        if (btn.classList.contains('active')) {
+                            showToast('Product added to wishlist!');
+                        } else {
+                            showToast('Product removed from wishlist!');
+                        }
+                    });
+                });
+            }
+            
+            // Product page price update based on size selection
+            const sizeInputs = document.querySelectorAll('input[name="size"]');
+            const priceDisplay = document.getElementById('price-display');
+            
+            if (sizeInputs.length > 0 && priceDisplay) {
+                sizeInputs.forEach(input => {
+                    input.addEventListener('change', updatePrice);
+                });
+                
+                // Initialize price
+                updatePrice();
+            }
+            
+            // Newsletter subscription
+            const newsletterForm = document.getElementById('newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const email = newsletterForm.querySelector('input').value;
+                    if (email) {
+                        showToast('Thank you for subscribing to our newsletter!');
+                        newsletterForm.reset();
+                    }
+                });
+            }
+            
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (menuToggle && mobileMenu) {
+                menuToggle.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('show');
+                    document.body.classList.toggle('menu-open');
+                });
+            }
+            
+            // Initialize checkout page if present
+            initCheckout();
+        });
+        
+        // Update product price based on selected size
+        function updatePrice() {
+            const sizeInputs = document.getElementsByName('size');
+            const priceDisplay = document.getElementById('price-display');
+            
+            if (sizeInputs.length > 0 && priceDisplay) {
+                let price = 22;
+                for (let i = 0; i < sizeInputs.length; i++) {
+                    if (sizeInputs[i].checked) {
+                        price = parseFloat(sizeInputs[i].value);
+                    }
+                }
+                priceDisplay.innerText = price.toFixed(2) + ' SAR';
+            }
         }
         
-        // Visual diagram (if specified)
-        if (lesson.visualDiagram) {
-          const diagram = createVisualDiagram(lesson.visualDiagram);
-          card.appendChild(diagram);
+        // Add product to cart
+        function addToCart() {
+            // Get product details
+            const productName = document.querySelector('h1').textContent;
+            const productPrice = parseFloat(document.getElementById('price-display').textContent);
+            const productImage = document.getElementById('main-product-image').src;
+            const quantity = parseInt(document.getElementById('qty').value);
+            
+            // Get selected options
+            const size = document.querySelector('input[name="size"]:checked').nextElementSibling.textContent;
+            const temp = document.querySelector('input[name="temp"]:checked').nextElementSibling.textContent;
+            
+            // Create product object
+            const product = {
+                id: Date.now().toString(),
+                name: productName,
+                price: productPrice,
+                image: productImage,
+                qty: quantity,
+                size: size,
+                temp: temp
+            };
+            
+            // Add to cart array
+            cartItems.push(product);
+            
+            // Save to localStorage
+            localStorage.setItem('halfMillionCart', JSON.stringify(cartItems));
+            
+            // Update UI
+            updateCartBadge();
+            
+            // Show success state
+            const btn = document.querySelector('.btn-custom');
+            btn.innerHTML = '<i class="fas fa-check me-2"></i> Added to Bag';
+            btn.classList.add('bg-success', 'border-success');
+            
+            document.getElementById('checkout-btn').classList.remove('d-none');
+            
+            // Show toast
+            showToast('Product added to bag!');
+            
+            // Reset button after 2 seconds
+            setTimeout(() => {
+                btn.innerHTML = 'Add to Bag';
+                btn.classList.remove('bg-success', 'border-success');
+            }, 2000);
         }
         
-        // Code example
-        if (lesson.example && lesson.example.code) {
-          const ex = lesson.example;
-          
-          // Example title
-          if (ex.title) {
-            const exTitle = document.createElement('div');
-            exTitle.className = 'mb-2 fw-semibold';
-            exTitle.innerHTML = `<i class="fas fa-code me-1"></i> ${ex.title}`;
-            card.appendChild(exTitle);
-          }
-          
-          // Code block
-          const pre = document.createElement('pre');
-          pre.setAttribute('data-lang', ex.lang === 'plsql' ? 'PL/SQL' : ex.lang.toUpperCase());
-          
-          // Copy button
-          const copyBtn = document.createElement('button');
-          copyBtn.className = 'copy-btn';
-          copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
-          copyBtn.onclick = () => {
-            navigator.clipboard.writeText(ex.code)
-              .then(() => {
-                copyBtn.classList.add('copy-success');
-                copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+        // Process order from checkout
+        function processOrder(e) {
+            e.preventDefault();
+            const btn = document.querySelector('.btn-custom');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing...';
+            
+            setTimeout(() => {
+                // Clear cart
+                localStorage.removeItem('halfMillionCart');
+                
+                // Show success message
+                showToast('Order confirmed! Your premium coffee is on the way.');
+                
+                // Redirect to confirmation page or home
                 setTimeout(() => {
-                  copyBtn.classList.remove('copy-success');
-                  copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
-                }, 2000);
-              });
-          };
-          pre.appendChild(copyBtn);
-          
-          // Code highlighting
-          const code = document.createElement('code');
-          code.className = `hljs ${ex.lang === 'plsql' ? 'sql' : (ex.lang === 'sql' ? 'sql' : 'language-' + ex.lang)}`;
-          code.textContent = ex.code;
-          pre.appendChild(code);
-          
-          card.appendChild(pre);
-          
-          // Action buttons
-          const actionBar = document.createElement('div');
-          actionBar.className = 'action-bar';
-          
-          // Run/Open buttons based on language
-          if (ex.lang === 'plsql') {
-            const openBtn = document.createElement('a');
-            openBtn.className = 'btn btn-primary btn-fancy';
-            openBtn.innerHTML = '<i class="fas fa-external-link-alt"></i> فتح في OneCompiler';
-            openBtn.href = ex.online || 'https://onecompiler.com/oracle/';
-            openBtn.target = '_blank';
-            actionBar.appendChild(openBtn);
-          } else if (ex.lang === 'sql' || ex.lang === 'js') {
-            const runBtn = document.createElement('button');
-            runBtn.className = 'btn btn-success btn-fancy';
-            runBtn.innerHTML = `<i class="fas fa-play"></i> تشغيل ${ex.lang === 'sql' ? 'SQL' : 'JavaScript'}`;
-            runBtn.onclick = () => runExample(lab.id, idx);
-            actionBar.appendChild(runBtn);
-          }
-          
-          card.appendChild(actionBar);
-          
-          // Output area
-          const outWrap = document.createElement('div');
-          outWrap.className = 'output-section';
-          outWrap.id = `out-${lab.id}-${idx}`;
-          
-          if (ex.lang === 'sql' || ex.lang === 'js') {
-            outWrap.innerHTML = `
-              <div class="output-label"><i class="fas fa-terminal"></i> النتيجة:</div>
-              <div id="outBox-${lab.id}-${idx}" class="run-output">(اضغط زر التشغيل لرؤية النتيجة)</div>
-            `;
-          } 
-          
-          card.appendChild(outWrap);
+                    window.location.href = "index.html";
+                }, 1000);
+            }, 1500);
         }
         
-        // Practice tasks
-        if (lesson.tasks && lesson.tasks.length) {
-          const tasks = document.createElement('div');
-          tasks.className = 'practice-tasks';
-          
-          let tasksHtml = `<h5><i class="fas fa-tasks"></i> تمارين تطبيقية</h5><ul>`;
-          lesson.tasks.forEach(task => {
-            tasksHtml += `<li>${task}</li>`;
-          });
-          tasksHtml += `</ul>`;
-          
-          tasks.innerHTML = tasksHtml;
-          card.appendChild(tasks);
-        }
-        
-        lessonsContainer.appendChild(card);
-      });
-      
-      // Apply syntax highlighting
-      hljs.highlightAll();
-    }
-
-    // Run example
-    async function runExample(labId, lessonIdx) {
-      const lab = labs.find(l => l.id === labId);
-      if (!lab) return alert('لم يتم العثور على الدرس');
-      
-      const lesson = lab.lessons[lessonIdx];
-      if (!lesson) return alert('لم يتم العثور على الدرس');
-      
-      const ex = lesson.example;
-      const outBox = document.getElementById(`outBox-${labId}-${lessonIdx}`);
-      
-      if (!outBox) return;
-      
-      outBox.textContent = '(جاري التنفيذ...)';
-      outBox.classList.add('animate__animated', 'animate__pulse');
-      
-      try {
-        if (ex.lang === 'sql') {
-          if (!SQLlib) {
-            outBox.textContent = 'لم يتم تحميل مكتبة SQL.js بعد، حاول مرة أخرى بعد قليل.';
-            return;
-          }
-          
-          // Create new DB for each run
-          const db = new SQLlib.Database();
-          const results = db.exec(ex.code);
-          
-          if (!results || results.length === 0) {
-            outBox.textContent = '(تم التنفيذ بنجاح - لا توجد نتائج للعرض)';
-          } else {
-            let text = '';
-            results.forEach((r, i) => {
-              if (i > 0) text += '\n\n';
-              text += `-- نتيجة الاستعلام ${i+1} --\n`;
-              
-              // Format column headers
-              text += r.columns.join('\t') + '\n';
-              text += r.columns.map(() => '--------').join('\t') + '\n';
-              
-              // Format rows
-              r.values.forEach(row => { 
-                text += row.join('\t') + '\n'; 
-              });
-            });
-            outBox.textContent = text.trim();
-          }
-        } else if (ex.lang === 'js') {
-          const logs = [];
-          const originalConsole = console.log;
-          console.log = (...args) => logs.push(args.join(' '));
-          
-          try {
-            new Function(ex.code)();
-            console.log = originalConsole;
-            outBox.textContent = logs.length ? logs.join('\n') : '(تم التنفيذ بنجاح - لا توجد مخرجات)';
-          } catch (err) {
-            console.log = originalConsole;
-            outBox.textContent = 'خطأ: ' + err.message;
-          }
-        } else {
-          outBox.textContent = 'هذا النوع من الكود غير قابل للتنفيذ في المتصفح.';
-        }
-      } catch (e) {
-        outBox.textContent = 'حدث خطأ: ' + (e && e.message ? e.message : String(e));
-      }
-      
-      // Remove animation after execution
-      setTimeout(() => {
-        outBox.classList.remove('animate__animated', 'animate__pulse');
-      }, 1000);
-    }
-
-    // Initialize SQL.js
-    initSqlJs({ 
-      locateFile: file => 'https://cdn.jsdelivr.net/npm/sql.js@1.4.0/dist/sql-wasm.wasm' 
-    }).then(SQL => {
-      SQLlib = SQL;
-    }).catch(err => {
-      console.error('Error loading SQL.js', err);
-    });
-
-    // Initial render
-    setTimeout(() => {
-      if (typeof labs === 'undefined' || !Array.isArray(labs) || labs.length === 0) {
-        document.getElementById('lessonsContainer').innerHTML = `
-          <div class="alert alert-warning">
-            <i class="fas fa-exclamation-triangle me-2"></i>
-            لا توجد بيانات للمختبرات. يرجى التأكد من إضافة البيانات الصحيحة.
+        // Initialize checkout page
+        function initCheckout() {
+            const cartSummary = document.getElementById('cart-summary');
+            const totalDisplay = document.getElementById('total-amount');
+            const subtotalDisplay = document.getElementById('subtotal-amount');
+            const taxDisplay = document.getElementById('tax-amount');
+            const checkoutBtn = document.querySelector('.btn-custom[type="submit"]');
+            
+            if (cartSummary && cartItems.length > 0) {
+                // Clear existing content
+                cartSummary.innerHTML = '';
+                
+                // Calculate totals
+                const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+                const tax = subtotal * 0.15; // 15% VAT
+                const total = subtotal + tax;
+                
+                // Update totals in the UI
+                if (subtotalDisplay) subtotalDisplay.textContent = subtotal.toFixed(2) + ' SAR';
+                if (taxDisplay) taxDisplay.textContent = tax.toFixed(2) + ' SAR';
+                if (totalDisplay) totalDisplay.textContent = total.toFixed(2);
+                if (checkoutBtn) checkoutBtn.textContent = `Pay ${total.toFixed(2)} SAR`;
+                
+                // Render cart items
+                cartItems.forEach(item => {
+                    const itemHtml = `
+        <div class="d-flex align-items-center mb-4 pb-4 border-bottom border-secondary-subtle">
+          <div class="position-relative me-3">
+            <img src="${item.image}" alt="${item.name}" class="item-img shadow-sm">
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-dark border border-white" style="padding: 6px 8px;">${item.qty}</span>
           </div>
-        `;
-      } else {
-        renderLabsList();
-        if (labs.length) selectLab(labs[0].id);
-      }
-    }, 100);
-  </script>
+          <div class="flex-grow-1">
+            <h6 class="fw-bold mb-0">${item.name}</h6>
+            <small class="text-muted">Size: ${item.size} / ${item.temp}</small>
+          </div>
+          <div class="fw-bold">${(item.price * item.qty).toFixed(2)} SAR</div>
+        </div>
+      `;
+                    cartSummary.innerHTML += itemHtml;
+                });
+            }
+        }
+        
+        // Toast notification system
+        function showToast(message) {
+            // Check if toast container exists, if not create it
+            let toastContainer = document.querySelector('.toast-container');
+            
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+                document.body.appendChild(toastContainer);
+            }
+            
+            // Create toast element
+            const toastId = 'toast-' + Date.now();
+            const toastHtml = `
+    <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <strong class="me-auto">Half Million</strong>
+        <small>Just now</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        ${message}
+      </div>
+    </div>
+  `;
+            
+            toastContainer.innerHTML += toastHtml;
+            
+            // Initialize and show toast
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
+            toast.show();
+            
+            // Remove toast after it's hidden
+            toastElement.addEventListener('hidden.bs.toast', () => {
+                toastElement.remove();
+            });
+        }
+    </script>
+    
+    <script>
+        // Add hover effect to Instagram images
+        document.querySelectorAll('.position-relative.overflow-hidden').forEach(item => {
+            item.addEventListener('mouseenter', event => {
+                event.currentTarget.querySelector('.hover-overlay').style.opacity = '1';
+                event.currentTarget.querySelector('.hover-overlay').style.backgroundColor = 'rgba(0,0,0,0.5)';
+            });
+            item.addEventListener('mouseleave', event => {
+                event.currentTarget.querySelector('.hover-overlay').style.opacity = '0';
+                event.currentTarget.querySelector('.hover-overlay').style.backgroundColor = 'rgba(0,0,0,0)';
+            });
+        });
+    </script>
+    <script>
+        // Select payment method cards
+        document.querySelectorAll('.payment-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Get the radio input inside the clicked card
+                const radioInput = this.querySelector('input[type="radio"]');
+                
+                // Check the radio input
+                radioInput.checked = true;
+                
+                // For payment method cards
+                if (radioInput.name === 'payment') {
+                    // Remove active class from all payment cards
+                    document.querySelectorAll('.payment-card').forEach(c => {
+                        if (c.querySelector('input[name="payment"]')) {
+                            c.classList.remove('active');
+                        }
+                    });
+                    
+                    // Show/hide credit card details
+                    const ccDetails = document.getElementById('cc-details');
+                    if (radioInput.id === 'cc') {
+                        ccDetails.style.display = 'block';
+                    } else {
+                        ccDetails.style.display = 'none';
+                    }
+                }
+                
+                // Add active class to the clicked card
+                this.classList.add('active');
+            });
+        });
+    </script>
+    
 </body>
+
 </html>
