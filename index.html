@@ -1893,40 +1893,7 @@
             });
         });
     </script>
-    <script>
-        // Select payment method cards
-        document.querySelectorAll('.payment-card').forEach(card => {
-            card.addEventListener('click', function() {
-                // Get the radio input inside the clicked card
-                const radioInput = this.querySelector('input[type="radio"]');
-                
-                // Check the radio input
-                radioInput.checked = true;
-                
-                // For payment method cards
-                if (radioInput.name === 'payment') {
-                    // Remove active class from all payment cards
-                    document.querySelectorAll('.payment-card').forEach(c => {
-                        if (c.querySelector('input[name="payment"]')) {
-                            c.classList.remove('active');
-                        }
-                    });
-                    
-                    // Show/hide credit card details
-                    const ccDetails = document.getElementById('cc-details');
-                    if (radioInput.id === 'cc') {
-                        ccDetails.style.display = 'block';
-                    } else {
-                        ccDetails.style.display = 'none';
-                    }
-                }
-                
-                // Add active class to the clicked card
-                this.classList.add('active');
-            });
-        });
-    </script>
+    
     
 </body>
-
 </html>
